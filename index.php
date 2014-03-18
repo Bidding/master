@@ -1,4 +1,5 @@
 <?php
+die('Hattab');
 /**
  * Magento
  *
