@@ -22,7 +22,13 @@
 				</points>
 			</updates>
 		</layout>
-	</frontend>
+	<events>
+			<sales_order_place_after>
+				<observers>
+					<points_order_observer>
+						<type>singleton</type>
+						<class>Bidding_Points_Model_Observer</class>
+						<method>setPoints</method></points_order_observer></observers></sales_order_place_after></events></frontend>
 	<global>
 		<blocks>
 			<points>
@@ -67,5 +73,5 @@
 				<class>Bidding_Points_Helper</class>
 			</points>
 		</helpers>
-	</global>
+		</global>
 </config>
