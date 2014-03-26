@@ -1,0 +1,6 @@
+app/etc/local.xml
+access.log
+error.log
+.buildpath
+.project
+.settings/*

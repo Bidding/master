@@ -28,10 +28,10 @@
 <config>
     <global>
         <install>
-            <date><![CDATA[Fri, 14 Mar 2014 13:40:52 +0000]]></date>
+            <date><![CDATA[Sun, 16 Mar 2014 09:46:32 +0000]]></date>
         </install>
         <crypt>
-            <key><![CDATA[034f42e2e90a7d7463164230467bddce]]></key>
+            <key><![CDATA[d479f2953de45dce91a0591811ffb4d3]]></key>
         </crypt>
         <disable_local_modules>false</disable_local_modules>
         <resources>
@@ -42,8 +42,8 @@
                 <connection>
                     <host><![CDATA[localhost]]></host>
                     <username><![CDATA[root]]></username>
-                    <password><![CDATA[]]></password>
-                    <dbname><![CDATA[bidding]]></dbname>
+                    <password><![CDATA[@hmad_2014]]></password>
+                    <dbname><![CDATA[new_bidding]]></dbname>
                     <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
                     <model><![CDATA[mysql4]]></model>
                     <type><![CDATA[pdo_mysql]]></type>
