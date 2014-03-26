@@ -3,4 +3,4 @@ access.log
 error.log
 .buildpath
 .project
-.settings/*
+.settings/
