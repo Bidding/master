@@ -4,3 +4,5 @@ error.log
 .buildpath
 .project
 .settings/
+media/*
+var/*

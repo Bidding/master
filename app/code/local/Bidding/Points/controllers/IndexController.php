@@ -6,6 +6,7 @@ class Bidding_Points_IndexController extends Mage_Core_Controller_Front_Action
 		$customer = Mage::getSingleton('customer/session');
 		return $customer;
 	}
+	
 	public function indexAction()
 	{
 		$session = $this->_getCustomerSession();
@@ -17,5 +18,10 @@ class Bidding_Points_IndexController extends Mage_Core_Controller_Front_Action
 		{
 			$this->_redirect('customer/account/login');
 		}
+	}
+	
+	public function addAction()
+	{
+		echo $this->getRequest()->getParam('id');die;
 	}
 }

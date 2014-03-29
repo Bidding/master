@@ -46,8 +46,10 @@
 					<points>
 						<table>customer_points_entity</table>
 					</points>
-					<points_history>
-						<table>customer_points_history</table></points_history></entities>
+					<history>
+						<table>customer_points_history</table>
+					</history>
+				</entities>
 			</points_mysql4>
 		</models>
 		<resources>

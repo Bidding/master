@@ -5,11 +5,19 @@ class Bidding_Points_Model_Observer
 	{
 		$order = $observer->getEvent()->getOrder();
 		$buyer_id = Mage::getSingleton('customer/session')->getId();
-		$quote = Mage::getSingleton('checkout/session')->getQuote();
-		$items = $quote->getAllVisibleItems();
-		echo '<pre>';
-		print_r(get_class_methods($items));
-		die;
+		$items = $order->getAllItems();
+		foreach ($items as $item):
+			$pointsModel = Mage::getModel('points/points');
+			$historyModel = Mage::getModel('points/history');
+			$pointsModel->setCustomerId($buyer_id);
+			$pointsModel->setBalance(100);
+			$pointsModel->save();
+			$historyModel->setCustomerId($buyer_id);
+			$historyModel->setOrderNumber($order->getIncrementId());
+			$historyModel->setBalance(100);
+			$historyModel->setDate($order->getDate());
+			$historyModel->save();
+		endforeach;
 	}
 }
 ?>

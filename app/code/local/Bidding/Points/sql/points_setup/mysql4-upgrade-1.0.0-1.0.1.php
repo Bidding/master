@@ -2,8 +2,8 @@
 $installer = $this;
 $installer->startSetup();
 $installer->run ("
-		DROP TABLE IF EXISTS `{$this->getTable('points/points_history')}`;
-         CREATE TABLE `{$this->getTable('points/points_history')}` (
+		DROP TABLE IF EXISTS `{$this->getTable('points/history')}`;
+         CREATE TABLE `{$this->getTable('points/history')}` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `customer_id` int(11) NOT NULL,
             `order_number` varchar(100) NOT NULL,
