@@ -12,7 +12,8 @@ class Bidding_Points_IndexController extends Mage_Core_Controller_Front_Action
 		$session = $this->_getCustomerSession();
 		if ($session->isLoggedIn())
 		{
-			echo 'Yes';
+			$this->loadLayout();
+			$this->renderLayout();
 		}
 		else
 		{

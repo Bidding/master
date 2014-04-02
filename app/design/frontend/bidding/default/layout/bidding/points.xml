@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.1.0">
+	<customer_account>
+		<reference name="customer_account_navigation">
+			<action method="addLink" module="points"><name>points_dashboard</name><path>points/index/</path><lable>My Points</lable></action>
+		</reference>
+	</customer_account>
+	<points_index_index>
+		<update handle="customer_account" />
+		<reference name="content">
+			<block type="points/dashboard" name="points.dashboard" template="bidding/points/dashboard.phtml" />
+		</reference>
+	</points_index_index>
+</layout>
