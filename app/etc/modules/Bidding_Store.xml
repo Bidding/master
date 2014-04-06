@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Bidding_Store>
+			<active>true</active>
+			<codePool>local</codePool>
+		</Bidding_Store>
+	</modules>
+</config>
