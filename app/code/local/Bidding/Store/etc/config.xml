@@ -7,20 +7,27 @@
 	</modules>
 	<frontend>
 		<routers>
-			<points>
+			<store>
 				<use>standard</use>
 				<args>
 					<module>Bidding_Store</module>
 					<frontName>bidding</frontName>
 				</args>
-			</points>
+			</store>
 		</routers>
 		<layout>
 			<updates>
-				<points>
+				<store>
 					<file>bidding/store.xml</file>
-				</points>
+				</store>
 			</updates>
 		</layout>
 	</frontend>
+	<global>
+		<blocks>
+			<store>
+				<class>Bidding_Store_Block</class>
+			</store>
+		</blocks>
+	</global>
 </config>
