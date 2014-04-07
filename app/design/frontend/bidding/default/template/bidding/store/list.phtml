@@ -4,3 +4,25 @@ foreach ($_products as $_product):
 	echo $_product->getId();
 endforeach;
 ?>
+<div class="countdown">
+Limited Time Only!
+<span id="clock"></span>
+</div>
+<script>
+	jQuery("#clock").countdown('2014/04/07 18:00:00')
+	.on('update.countdown', function(event){
+		var format = '%H:%M:%S';
+		if (event.offset.days > 0){
+			format = '%-d day%!d ' + format;
+		}
+		if (event.offset.weeks > 0){
+			format = '%-w week%!w ' + format;
+		}
+		jQuery("#clock").html(event.strftime(format));
+	})
+	.on('finish.countdown', function(event) {
+		jQuery(jQuery(this)).parent()
+		.addClass('disabled')
+		.html('<strong>This offer has expired!</strong>');
+	});
+</script>
