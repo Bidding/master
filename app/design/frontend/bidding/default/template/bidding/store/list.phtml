@@ -1,15 +1,45 @@
 <?php 
 $_products = $this->getProducts();
-foreach ($_products as $_product):
-	echo $_product->getId();
-endforeach;
+if ($_products->count()):
 ?>
-<div class="countdown">
-Limited Time Only!
-<span id="clock"></span>
-</div>
-<script>
-	jQuery("#clock").countdown('2014/04/07 18:00:00')
+<ul class="col1-layout products-grid">
+	<?php
+	$i = 1;
+	foreach ($_products as $_product):
+	$_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate()));
+	?>
+	<li class="item"><a href="<?php echo $_product->getProductUrl() ?>"
+		class="product-image"> <img
+			src="<?php echo $_product->getImageUrl() ?>" width="135" height="135" />
+	</a>
+		<h1 class="product-name">
+			<a href="<?php echo $_product->getProductUrl() ?>"
+				title="<?php $_product->getName() ?>"><?php echo $_product->getName() ?>
+			</a>
+		</h1>
+		<div class="price-box">
+			<span class="reqular-price"> <span><?php echo $this->__('Open Bid Price:') . ' '?>
+			</span><span class="price"><?php echo Mage::helper('core')->currency($_product->getOpeningPrice()); ?>
+			</span>
+			</span>
+		</div>
+		<div class="countdown">
+			<style>
+.currentvalue {
+	background: rgb(255, 255, 255);
+	color: rgb(12, 126, 0);
+	font-size: 18px;
+	margin: 0px 3px;
+	padding: 4px;
+	border-radius: 6px;
+	text-align: center;
+}
+</style>
+			<p class="currentvalue">
+				<span id="clock<?php echo $i; ?>"></span>
+			</p>
+		</div> <script>
+	jQuery("#clock" + <?php echo $i; ?>).countdown("<?php echo $_productDate ?>")
 	.on('update.countdown', function(event){
 		var format = '%H:%M:%S';
 		if (event.offset.days > 0){
@@ -18,7 +48,7 @@ Limited Time Only!
 		if (event.offset.weeks > 0){
 			format = '%-w week%!w ' + format;
 		}
-		jQuery("#clock").html(event.strftime(format));
+		jQuery("#clock" + <?php echo $i; ?>).html(event.strftime(format));
 	})
 	.on('finish.countdown', function(event) {
 		jQuery(jQuery(this)).parent()
@@ -26,3 +56,26 @@ Limited Time Only!
 		.html('<strong>This offer has expired!</strong>');
 	});
 </script>
+		<div style="text-align: center; margin-top: 10px;">
+			<form action="#" method="post">
+				<button type="button" title="bid" class="button">
+					<span> <span><?php echo $this->__('Bid')?> </span>
+					</span>
+				</button>
+			</form>
+		</div>
+	</li>
+	<?php
+	$i++;
+	endforeach;
+	?>
+</ul>
+<?php 
+else :
+?>
+<p class="note-msg">
+	<?php echo $this->__('There are no products for bid right now')?>
+</p>
+<?php
+endif;
+?>
