@@ -1,6 +1,13 @@
 <?php
 class Bidding_Store_Block_Product extends Mage_Core_Block_Template
 {
+	
+	public function getCustomerSession()
+	{
+		$session = Mage::getSingleton('customer/session');
+		return $session;
+	}
+	
 	public function getProducts()
 	{
 		$currentTimestamp = Mage::getModel('core/date')->timestamp(time());

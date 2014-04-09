@@ -57,12 +57,59 @@ if ($_products->count()):
 	});
 </script>
 		<div style="text-align: center; margin-top: 10px;">
-			<form action="#" method="post">
-				<button type="button" title="bid" class="button">
+			<?php
+			$customerSession = $this->getCustomerSession();
+			if(!$customerSession->isLoggedIn())
+			{
+			?>
+			<button type="button" title="bid" class="button" id="button<?php echo $_product->getId() ?>" onclick="javascript:alert('Please login')">
+				<span>
+					<span><?php echo $this->__('Bid')?> </span>
+				</span>
+			</button>
+			<?php	
+			} 
+			else
+			{	
+			?>
+			<form action="#" method="post" class="formbid<?php echo $_product->getId() ?>" id="formbid<?php echo $_product->getId() ?>">
+				<input type="hidden" name="productId" value="<?php echo $_product->getId() ?>" />
+				<button type="submit" title="bid" class="button" id="button<?php echo $_product->getId() ?>">
 					<span> <span><?php echo $this->__('Bid')?> </span>
 					</span>
 				</button>
 			</form>
+			<script>
+				jQuery("#formbid<?php echo $_product->getId() ?>").submit(function(event) {
+					event.preventDefault();
+					jQuery("#button<?php echo $_product->getId() ?>").attr("disabled", true);
+					jQuery("#button<?php echo $_product->getId() ?>").fadeOut();
+					var values = jQuery(this).serialize();
+					jQuery.ajax({
+						url: "<?php echo $this->getUrl('bidding/index/bidPost') ?>",
+						type: "post",
+						data: values,
+						success: function(resp){
+							if(resp)
+							{
+							  jQuery("#button<?php echo $_product->getId() ?>").attr("disabled", false); 
+                       		  jQuery("#button<?php echo $_product->getId() ?>").delay(1000).fadeIn(800);
+                       		} 
+                       		else
+                       		{
+                       			alert('Please log in to access it');
+                       		}
+						},
+						error: function(){
+							alert('faild');
+						}
+					});
+					return false;
+				});
+			</script>
+			<?php
+			}
+			?>
 		</div>
 	</li>
 	<?php
