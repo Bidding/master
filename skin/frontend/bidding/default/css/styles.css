@@ -1798,3 +1798,12 @@ tr.summary-details-excluded { font-style:italic; }
 /* ======================================================================================= */
 
 .guest-select {width:305px !important;}
+.currentvalue {
+	background: rgb(255, 255, 255);
+	color: rgb(12, 126, 0);
+	font-size: 18px;
+	margin: 0px 3px;
+	padding: 4px;
+	border-radius: 6px;
+	text-align: center;
+}

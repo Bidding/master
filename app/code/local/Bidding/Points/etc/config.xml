@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Bidding_Points>
-			<version>1.0.4</version>
+			<version>1.0.6</version>
 		</Bidding_Points>
 	</modules>
 	<frontend>
@@ -49,6 +49,9 @@
 					<history>
 						<table>customer_points_history</table>
 					</history>
+					<bid>
+						<table>customer_bid_history</table>
+					</bid>
 				</entities>
 			</points_mysql4>
 		</models>

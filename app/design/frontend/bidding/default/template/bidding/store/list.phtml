@@ -24,21 +24,16 @@ if ($_products->count()):
 			</span>
 		</div>
 		<div class="countdown">
-			<style>
-.currentvalue {
-	background: rgb(255, 255, 255);
-	color: rgb(12, 126, 0);
-	font-size: 18px;
-	margin: 0px 3px;
-	padding: 4px;
-	border-radius: 6px;
-	text-align: center;
-}
-</style>
 			<p class="currentvalue">
 				<span id="clock<?php echo $i; ?>"></span>
 			</p>
-		</div> <script>
+		</div> 
+		<div class="price-box" style="text-align: center;">
+			<span class="price">
+				<span><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?></span>
+			</span>
+		</div>		
+<script>
 	jQuery("#clock" + <?php echo $i; ?>).countdown("<?php echo $_productDate ?>")
 	.on('update.countdown', function(event){
 		var format = '%H:%M:%S';
@@ -51,9 +46,7 @@ if ($_products->count()):
 		jQuery("#clock" + <?php echo $i; ?>).html(event.strftime(format));
 	})
 	.on('finish.countdown', function(event) {
-		jQuery(jQuery(this)).parent()
-		.addClass('disabled')
-		.html('<strong>This offer has expired!</strong>');
+		location.reload();
 	});
 </script>
 		<div style="text-align: center; margin-top: 10px;">
@@ -92,6 +85,7 @@ if ($_products->count()):
 						success: function(resp){
 							if(resp)
 							{
+							alert(resp);
 							  jQuery("#button<?php echo $_product->getId() ?>").attr("disabled", false); 
                        		  jQuery("#button<?php echo $_product->getId() ?>").delay(1000).fadeIn(800);
                        		} 
@@ -104,7 +98,6 @@ if ($_products->count()):
 							alert('faild');
 						}
 					});
-					return false;
 				});
 			</script>
 			<?php
