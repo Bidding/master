@@ -19,4 +19,16 @@ class Bidding_Store_Block_Product extends Mage_Core_Block_Template
 					->addAttributeToFilter('end_bidding_date', array('gteq' => $date));
 		return $products;
 	}
+	
+	public function getCurrentBidder($productId)
+	{
+		$customerSession = $this->getCustomerSession();
+		$currentBidder = Mage::getModel('points/bid')->getCollection()
+			->addFieldToSelect(array('customer_id','price','new_price'))
+			->addFieldToFilter('product_id', array('eq' => $productId));
+		$currentBidder->getSelect()
+			->reset(Zend_Db_Select::COLUMNS)
+			->columns(array('MAX(id) as id', 'customer_id', 'price', 'new_price'));
+		echo $currentBidder->getSelect()->__toString();die();
+	}
 }

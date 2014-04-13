@@ -32,7 +32,10 @@ if ($_products->count()):
 			<span class="price">
 				<span><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?></span>
 			</span>
-		</div>		
+		</div>
+		<div>
+			<span class="bidder"><?php echo $this->__('Bidder')?> <?php $this->getCurrentBidder($_product->getId()) ?></span>
+		</div>	
 <script>
 	jQuery("#clock" + <?php echo $i; ?>).countdown("<?php echo $_productDate ?>")
 	.on('update.countdown', function(event){
@@ -57,7 +60,7 @@ if ($_products->count()):
 			?>
 			<button type="button" title="bid" class="button" id="button<?php echo $_product->getId() ?>" onclick="javascript:alert('Please login')">
 				<span>
-					<span><?php echo $this->__('Bid')?> </span>
+					<span><?php echo $this->__('Bid')?></span>
 				</span>
 			</button>
 			<?php	
