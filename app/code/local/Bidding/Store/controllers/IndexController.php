@@ -34,12 +34,22 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 					$bidHistory->save();
 					$_product->setCurrentPrice($newPrice);
 					$_product->save();
-					echo "done";
+					$points->setBalance($points->getBalance() - 1 );
+					$points->save();
+					$data = array('action' => 'true', 'price'=> Mage::helper('core')->currency($_product->getCurrentPrice()), 'bidder'=> $customerSession->getCustomer()->getName());
+					echo json_encode($data);
 				}
 				else
 				{
 					echo "can't bid";
 				}
+			}
+			else
+			{
+				$session = Mage::getModel('core/session');
+				$session->addError($this->__("You don't have enough points"));
+				$data = array('action' => 'false');
+				echo json_encode($data);
 			}
 		}
 		else

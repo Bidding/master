@@ -2,6 +2,8 @@
 $_products = $this->getProducts();
 if ($_products->count()):
 ?>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+
 <ul class="col1-layout products-grid">
 	<?php
 	$i = 1;
@@ -19,7 +21,7 @@ if ($_products->count()):
 		</h1>
 		<div class="price-box">
 			<span class="reqular-price"> <span><?php echo $this->__('Open Bid Price:') . ' '?>
-			</span><span class="price"><?php echo Mage::helper('core')->currency($_product->getOpeningPrice()); ?>
+			</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getOpeningPrice()); ?>
 			</span>
 			</span>
 		</div>
@@ -28,13 +30,24 @@ if ($_products->count()):
 				<span id="clock<?php echo $i; ?>"></span>
 			</p>
 		</div> 
+		<style>
+			.highlight {
+			background-color: red;
+			}
+		</style>
 		<div class="price-box" style="text-align: center;">
-			<span class="price">
+			<div class="price" id="price<?php echo $_product->getId() ?>">
 				<span><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?></span>
-			</span>
+			</div>
 		</div>
 		<div>
-			<span class="bidder"><?php echo $this->__('Bidder')?> <?php $this->getCurrentBidder($_product->getId()) ?></span>
+			<?php 
+			$bidder = $this->getCurrentBidder($_product->getId());
+			if ($bidder):
+			$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
+			?>
+			<span class="bidder"><?php echo $this->__('Bidder:')?> <span class="biddername<?php echo $_product->getId() ?>"><?php echo $bidder ?></span></span>
+			<?php endif; ?>
 		</div>	
 <script>
 	jQuery("#clock" + <?php echo $i; ?>).countdown("<?php echo $_productDate ?>")
@@ -86,12 +99,30 @@ if ($_products->count()):
 						type: "post",
 						data: values,
 						success: function(resp){
-							if(resp)
+							resp = jQuery.parseJSON(resp);
+							if(resp.action == 'true')
 							{
-							alert(resp);
+							  jQuery(".biddername<?php echo $_product->getId() ?>").html(resp.bidder);
+							  jQuery("#price<?php echo $_product->getId() ?>").html(resp.price);
+							  jQuery(".biddername<?php echo $_product->getId() ?>").addClass('highlight').delay(1000).queue(
+									  function(next){
+										  jQuery(".biddername<?php echo $_product->getId() ?>").removeClass('highlight');
+										  next();
+									}
+							   );
+							  jQuery("#price<?php echo $_product->getId() ?>").addClass('highlight').delay(1000).queue(
+									  function(next){
+										  jQuery("#price<?php echo $_product->getId() ?>").removeClass('highlight');
+										  next();
+									}
+							   );
 							  jQuery("#button<?php echo $_product->getId() ?>").attr("disabled", false); 
                        		  jQuery("#button<?php echo $_product->getId() ?>").delay(1000).fadeIn(800);
-                       		} 
+                       		}
+							else if (resp.action == 'false')
+							{
+								location.reload();
+							}
                        		else
                        		{
                        			alert('Please log in to access it');

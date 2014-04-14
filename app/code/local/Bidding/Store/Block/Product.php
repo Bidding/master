@@ -26,9 +26,8 @@ class Bidding_Store_Block_Product extends Mage_Core_Block_Template
 		$currentBidder = Mage::getModel('points/bid')->getCollection()
 			->addFieldToSelect(array('customer_id','price','new_price'))
 			->addFieldToFilter('product_id', array('eq' => $productId));
-		$currentBidder->getSelect()
-			->reset(Zend_Db_Select::COLUMNS)
-			->columns(array('MAX(id) as id', 'customer_id', 'price', 'new_price'));
-		echo $currentBidder->getSelect()->__toString();die();
+		$currentBidder->getSelect()->order('id desc');
+		$currentBidder->getSelect()->limit(1);
+		return $currentBidder->getData();
 	}
 }
