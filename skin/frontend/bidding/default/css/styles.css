@@ -1807,3 +1807,21 @@ tr.summary-details-excluded { font-style:italic; }
 	border-radius: 6px;
 	text-align: center;
 }
+.bidders-list .product-essential {
+	padding: 5px !important;
+	text-align: center;
+}
+div.content table {
+	width: 100%;
+}
+div.content table thead tr {
+	background: white;
+	text-transform: uppercase;
+}
+div.content table thead tr td {
+	text-align: center !important;
+}
+div.content table tbody tr td {
+	text-align: center !important;
+	padding-top: 5px;
+}

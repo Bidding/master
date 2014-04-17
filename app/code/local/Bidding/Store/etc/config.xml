@@ -29,5 +29,18 @@
 				<class>Bidding_Store_Block</class>
 			</store>
 		</blocks>
+		<models>
+			<store>
+				<class>Bidding_Store_Model</class>
+			</store>
+		</models>
 	</global>
+	<crontab>
+		<jobs>
+			<winner_check_all>
+				<schedule><cron_expr>*/1 * * * *</cron_expr></schedule>
+				<run><model>store/cron::checkWinner</model></run>
+			</winner_check_all>
+		</jobs>
+	</crontab>
 </config>

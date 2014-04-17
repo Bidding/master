@@ -359,7 +359,14 @@ abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Templ
     public function getProduct()
     {
         if (!$this->hasData('product')) {
+        	if ($this->getRequest()->getParam('id'))
+        	{
+        	$this->setData('product', Mage::getModel('catalog/product')->load($this->getRequest()->getParam('id')));	
+        	}
+        	else
+        	{
             $this->setData('product', Mage::registry('product'));
+        	}
         }
         return $this->getData('product');
     }

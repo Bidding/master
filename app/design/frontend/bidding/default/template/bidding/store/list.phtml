@@ -10,12 +10,12 @@ if ($_products->count()):
 	foreach ($_products as $_product):
 	$_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate()));
 	?>
-	<li class="item"><a href="<?php echo $_product->getProductUrl() ?>"
+	<li class="item"><a href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
 		class="product-image"> <img
 			src="<?php echo $_product->getImageUrl() ?>" width="135" height="135" />
 	</a>
 		<h1 class="product-name">
-			<a href="<?php echo $_product->getProductUrl() ?>"
+			<a href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
 				title="<?php $_product->getName() ?>"><?php echo $_product->getName() ?>
 			</a>
 		</h1>
@@ -82,6 +82,7 @@ if ($_products->count()):
 			{	
 			?>
 			<form action="#" method="post" class="formbid<?php echo $_product->getId() ?>" id="formbid<?php echo $_product->getId() ?>">
+			<?php echo $this->getBlockHtml('formkey') ?>
 				<input type="hidden" name="productId" value="<?php echo $_product->getId() ?>" />
 				<button type="submit" title="bid" class="button" id="button<?php echo $_product->getId() ?>">
 					<span> <span><?php echo $this->__('Bid')?> </span>
@@ -104,20 +105,21 @@ if ($_products->count()):
 							{
 							  jQuery(".biddername<?php echo $_product->getId() ?>").html(resp.bidder);
 							  jQuery("#price<?php echo $_product->getId() ?>").html(resp.price);
-							  jQuery(".biddername<?php echo $_product->getId() ?>").addClass('highlight').delay(1000).queue(
+							  jQuery(".biddername<?php echo $_product->getId() ?>").addClass('highlight').delay(500).queue(
 									  function(next){
 										  jQuery(".biddername<?php echo $_product->getId() ?>").removeClass('highlight');
 										  next();
 									}
 							   );
-							  jQuery("#price<?php echo $_product->getId() ?>").addClass('highlight').delay(1000).queue(
-									  function(next){
+							  jQuery("#price<?php echo $_product->getId() ?>").addClass('highlight').delay(500).queue(
+								  function(next){
 										  jQuery("#price<?php echo $_product->getId() ?>").removeClass('highlight');
 										  next();
 									}
 							   );
 							  jQuery("#button<?php echo $_product->getId() ?>").attr("disabled", false); 
-                       		  jQuery("#button<?php echo $_product->getId() ?>").delay(1000).fadeIn(800);
+                       		  jQuery("#button<?php echo $_product->getId() ?>").delay(500).fadeIn(50);
+								
                        		}
 							else if (resp.action == 'false')
 							{

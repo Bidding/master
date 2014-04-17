@@ -4637,7 +4637,7 @@ jQuery.event = {
 
 					// Prevent re-triggering of the same event, since we already bubbled it above
 					jQuery.event.triggered = type;
-					elem[ type ]();
+					//elem[ type ]();
 					jQuery.event.triggered = undefined;
 
 					if ( tmp ) {
