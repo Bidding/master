@@ -59,7 +59,7 @@
 			</style>
 				<div class="price-box" style="text-align: center;">
 					<div class="price" id="price<?php echo $_product->getId() ?>">
-						<span id="price"><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?></span>
+						<span id="price-box-<?php echo $_product->getId()?>"><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?></span>
 					</div>
 				</div>
 				<div>
@@ -68,7 +68,7 @@
 					if ($bidder):
 					$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
 					?>
-					<span class="bidder"><?php echo $this->__('Bidder:')?> <span class="biddername"><?php echo $bidder ?></span></span>
+					<span class="bidder"><?php echo $this->__('Bidder:')?> <span class="biddername<?php echo $_product->getId() ?>"><?php echo $bidder ?></span></span>
 					<?php endif; ?>
 				</div>
 				<?php $_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate())); ?>
@@ -129,7 +129,7 @@
 							{
 							  jQuery("#view-bid-button").attr("disabled", false); 
                        		  jQuery("#view-bid-button").delay(500).fadeIn(50);
-                       		 window.socket.emit('send', { message: 1, price: resp.price, bidder: resp.bidder, bidderTable: resp.bidderTable });
+                       		 window.socket.emit('send', { message: 1, PI: resp.PI, price: resp.price, bidder: resp.bidder, bidderTable: resp.bidderTable });
                        		}
 							else if (resp.action == 'false')
 							{

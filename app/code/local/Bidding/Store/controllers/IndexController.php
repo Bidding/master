@@ -36,7 +36,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 					$_product->save();
 					$points->setBalance($points->getBalance() - 1 );
 					$points->save();
-					$data = array('action' => 'true', 'price'=> Mage::helper('core')->currency($_product->getCurrentPrice()), 'bidder'=> $customerSession->getCustomer()->getName(), 'bidderTable' => "<tr><td>".Mage::helper('core')->currency($_product->getCurrentPrice())."</td><td>".$customerSession->getCustomer()->getName()."</td></tr>");
+					$data = array('action' => 'true','PI' => $_product->getId(), 'price'=> Mage::helper('core')->currency($_product->getCurrentPrice()), 'bidder'=> $customerSession->getCustomer()->getName(), 'bidderTable' => "<tr><td>".Mage::helper('core')->currency($_product->getCurrentPrice())."</td><td>".$customerSession->getCustomer()->getName()."</td></tr>");
 					echo json_encode($data);
 				}
 				else

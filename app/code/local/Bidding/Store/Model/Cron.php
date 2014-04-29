@@ -6,4 +6,3 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 		Mage::log("Cron is Running!");
 	}
 }
-?>

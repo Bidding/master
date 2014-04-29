@@ -4,7 +4,7 @@
 			<h1><?php echo $this->__('Bid History')?></h1>
 		</div>
 		<div class="content">
-			<table border="0" cellspacing="0" cellpadding="0" id="bidder-table">
+			<table border="0" cellspacing="0" cellpadding="0" id="bidder-table-<?php echo $this->getRequest()->getParam('id')?>">
 				<thead>
 					<tr>
 						<td><?php echo $this->__('Bid')?></td>

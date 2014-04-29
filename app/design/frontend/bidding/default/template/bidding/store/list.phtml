@@ -2,6 +2,30 @@
 $_products = $this->getProducts();
 if ($_products->count()):
 ?>
+<script type="text/javascript">
+<!--
+window.onload = function () {
+	window.socket = io.connect('http://127.0.0.1:3700');
+	socket.on('message', function (data) {
+		jQuery("#price-box-" + data.PI).html(data.price);
+		jQuery("#price-box-" + data.PI).addClass('highlight').delay(500).queue(
+		  function(next){
+			jQuery("#price-box-" + data.PI).removeClass('highlight');
+			next();
+			}
+		 );
+
+		  jQuery(".biddername" + data.PI).html(data.bidder);
+		  jQuery(".biddername" + data.PI).addClass('highlight').delay(500).queue(
+				  function(next){
+					  jQuery(".biddername" + data.PI).removeClass('highlight');
+					  next();
+				}
+		   );
+	});
+}
+//-->
+</script>
 <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
 
 <ul class="col1-layout products-grid">
@@ -37,7 +61,7 @@ if ($_products->count()):
 		</style>
 		<div class="price-box" style="text-align: center;">
 			<div class="price" id="price<?php echo $_product->getId() ?>">
-				<span><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?></span>
+				<span id="price-box-<?php echo $_product->getId()?>"><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?></span>
 			</div>
 		</div>
 		<div>
@@ -103,22 +127,9 @@ if ($_products->count()):
 							resp = jQuery.parseJSON(resp);
 							if(resp.action == 'true')
 							{
-							  jQuery(".biddername<?php echo $_product->getId() ?>").html(resp.bidder);
-							  jQuery("#price<?php echo $_product->getId() ?>").html(resp.price);
-							  jQuery(".biddername<?php echo $_product->getId() ?>").addClass('highlight').delay(500).queue(
-									  function(next){
-										  jQuery(".biddername<?php echo $_product->getId() ?>").removeClass('highlight');
-										  next();
-									}
-							   );
-							  jQuery("#price<?php echo $_product->getId() ?>").addClass('highlight').delay(500).queue(
-								  function(next){
-										  jQuery("#price<?php echo $_product->getId() ?>").removeClass('highlight');
-										  next();
-									}
-							   );
 							  jQuery("#button<?php echo $_product->getId() ?>").attr("disabled", false); 
                        		  jQuery("#button<?php echo $_product->getId() ?>").delay(500).fadeIn(50);
+                       		window.socket.emit('send', { message: 1, PI: resp.PI, price: resp.price, bidder: resp.bidder, bidderTable: resp.bidderTable });
 								
                        		}
 							else if (resp.action == 'false')
