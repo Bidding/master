@@ -6,10 +6,25 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 		$session = Mage::getSingleton('customer/session');
 		return $session;
 	}
+	
 	public function indexAction()
 	{
 		$this->loadLayout();
 		$this->renderLayout();
+	}
+	
+	public function winnerAction()
+	{
+		$customer_session = $this->_getCustomerSession();
+		if ($customer_session->isLoggedin())
+		{
+			$this->loadLayout();
+			$this->renderLayout();
+		}
+		else
+		{
+			$this->_redirect('customer/account/login');
+		}	
 	}
 	
 	public function bidPostAction()

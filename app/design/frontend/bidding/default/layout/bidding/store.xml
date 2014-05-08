@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout version="0.1.0">
+	<customer_account>
+		<reference name="customer_account_navigation">
+			<action method="addLink" module="store"><name>winner_dashboard</name><path>store/index/winner/</path><lable>Winner List</lable></action>
+		</reference>
+	</customer_account>
 	<store_index_index>
 		<reference name="head">
 			<action method="removeItem"><type>js</type><name>prototype/prototype.js</name></action>
@@ -35,4 +40,10 @@
         	<block type="store/product_listofbidders" name="bidders.list" template="bidding/store/view/bidders-list.phtml" />
         </reference>
 	</store_product_view>
+	<store_index_winner>
+		<update handle="customer_account" />
+		<reference name="content">
+			<block type="store/winner_dashboard" name="winner.dashboard" template="bidding/store/winner_dashboard.phtml" />
+		</reference>
+	</store_index_winner>
 </layout>
