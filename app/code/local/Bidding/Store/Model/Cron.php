@@ -1,27 +1,49 @@
-<?php 
+<?php
 class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 {
 	public function checkWinner()
 	{
 		$date = date('Y-m-d H:i:s');
 		$products = Mage::getModel('catalog/product')->getCollection()
-			->addFieldToFilter('end_bidding_date', array('lt' => $date));
+		->addAttributeToSelect('name')
+		->addFieldToFilter('end_bidding_date', array('lt' => $date));
 		foreach ($products as $product)
 		{
-			Mage::log($product->getId());
 			if ($product->getId())
 			{
-				$winnerCheck = Mage::getModel('points/winner')->load($product->getId(), 'product_id');
-				if (!$winnerCheck->getId())
+				$winner_check = Mage::getModel('points/winner')->load($product->getId(), 'product_id');
+				if (!$winner_check->getId())
 				{
-				$winner = Mage::getModel('points/winner');
-				$winner->setCustomerId(1);
-				$winner->setProductId($product->getId());
-				$winner->setWinDate(date('Y-m-d H:i:s'));
-				$winner->setBought(0);
-				$winner->save();
+					$winner_bidder = Mage::getModel('points/bid')->getCollection()
+					->addFieldToSelect(array('customer_id','price','new_price'))
+					->addFieldToFilter('product_id', array('eq' => $product->getId()));
+					$winner_bidder->getSelect()->order('id desc');
+					$winner_bidder = $winner_bidder->getData();
+					
+					$winner = Mage::getModel('points/winner');
+					$winner->setCustomerId($winner_bidder[0]['customer_id']);
+					$winner->setProductId($product->getId());
+					$winner->setWinDate(date('Y-m-d H:i:s'));
+					$winner->setBought(0);
+					$winner->save();
+					
+					Mage::log($product->getProductName());
+					$customer = Mage::getModel('customer/customer')->load($winner_bidder[0]['customer_id']);
+					$this->sendEmail($customer->getEmail() , $customer->getName(), $product->getName());
 				}
 			}
 		}
+	}
+
+	public function sendEmail($to_email, $to_name, $product_name)
+	{
+		$emailTemplate = Mage::getModel('core/email_template')->loadDefault('winner_email_template');
+		
+		$emailTemplateVariables = array();
+		$emailTemplateVariables['product_name'] = $product_name;
+
+		$processedTemplate = $emailTemplate->getProcessedTemplate($emailTemplateVariables);
+		
+		$emailTemplate->send($to_email, $to_name, $emailTemplateVariables);
 	}
 }

@@ -24,6 +24,15 @@
 		</layout>
 	</frontend>
 	<global>
+		<template>
+			<email>
+				<winner_email_template module="Bidding_Store">
+					<label>Winner Email Template</label>
+					<file>bidding/winner.html</file>
+					<type>html</type>
+				</winner_email_template>
+			</email>
+		</template>
 		<blocks>
 			<store>
 				<class>Bidding_Store_Block</class>
