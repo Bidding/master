@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Amman');
 class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 {
 	public function checkWinner()
@@ -29,19 +30,27 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 					
 					Mage::log($product->getName());
 					$customer = Mage::getModel('customer/customer')->load($winner_bidder[0]['customer_id']);
-					$this->sendEmail($customer->getEmail() , $customer->getName(), $product->getName());
+					$this->_sendEmail($customer->getEmail() , $customer->getName(), $product->getName());
 				}
 			}
 		}
 	}
+	
+	public function checkExpired()
+	{
+		$yesterdayDate = date('Y-m-d H:i:s', strtotime("-1 days"));
+		$winner_produts = Mage::getModel('points/winner')->getCollection()
+							->addFieldToFilter('win_date', array('lteq' => $yesterdayDate));
+	}
 
-	public function sendEmail($to_email, $to_name, $product_name)
+	private function _sendEmail($to_email, $to_name, $product_name)
 	{
 		$emailTemplate = Mage::getModel('core/email_template')->loadDefault('winner_email_template');
 		
 		$emailTemplateVariables = array();
 		$emailTemplateVariables['product_name'] = $product_name;
-
+		$emailTemplateVariables['customer_name'] = $to_name;
+		$emailTemplateVariables['product_url'] = Mage::getUrl('bidding/index/winner');
 		$processedTemplate = $emailTemplate->getProcessedTemplate($emailTemplateVariables);
 		
 		$emailTemplate->send($to_email, $to_name, $emailTemplateVariables);

@@ -23,7 +23,8 @@
  * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
+$yesterdayDate = date('Y-m-d H:i:s', strtotime("-1 days"));
+echo $yesterdayDate;
 // Change current directory to the directory of current script
 chdir(dirname(__FILE__));
 

@@ -1,5 +1,5 @@
 <?php
-class Bidding_Store_Block_Winner_Dashboard extends Mage_Core_Block_Template
+class Bidding_Store_Block_Winner_Dashboard extends Mage_Catalog_Block_Product_Abstract
 {
 	protected function _getCustomerSession()
 	{
@@ -14,4 +14,5 @@ class Bidding_Store_Block_Winner_Dashboard extends Mage_Core_Block_Template
 					->addFieldToFilter('customer_id', array('eq' => $customer_session->getCustomer()->getId()));
 		return $products;
 	}
+	
 }
