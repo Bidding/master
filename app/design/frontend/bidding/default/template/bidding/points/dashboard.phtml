@@ -45,7 +45,7 @@
 						<td><?php echo $_pointHistory->getOrderNumber() ?></td>
 						<td><span class="nobr"><?php echo $this->formatDate($_pointHistory->getDate()) ?></span></td>
 						<td><?php echo $_pointHistory->getBalance() ?></td>
-						<td class="a-center"><span class="nobr"><a href="<?php echo $this->getViewUrl($_pointHistory) ?>"><?php echo $this->__('View Order') ?></a>
+						<td class="a-center"><span class="nobr"><a href="<?php echo Mage::getUrl('sales/order/view', array('order_id' => $_pointHistory->getOrderId())) ?>"><?php echo $this->__('View Order') ?></a>
 						</span>
 						</td>
 					</tr>

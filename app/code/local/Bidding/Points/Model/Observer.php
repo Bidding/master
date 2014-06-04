@@ -23,6 +23,7 @@ class Bidding_Points_Model_Observer
 		// Set History in History Table
 		$historyModel->setCustomerId($buyer_id);
 		$historyModel->setOrderNumber($order->getIncrementId());
+		$historyModel->setOrderId($order->getId());
 		$historyModel->setBalance($_product->getPoints());
 		$historyModel->setDate($order->getDate());
 		$historyModel->save();

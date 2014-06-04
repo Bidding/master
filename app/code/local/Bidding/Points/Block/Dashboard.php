@@ -33,6 +33,6 @@ class Bidding_Points_Block_Dashboard extends Mage_Core_Block_Template
 	
 	public function getViewUrl($order)
 	{
-		return $this->getUrl('*/*/view', array('order_id' => $order->getOrderNumber()));
+		return $this->getUrl('*/*/view', array('order_id' => $order->getOrderId()));
 	}
 }
