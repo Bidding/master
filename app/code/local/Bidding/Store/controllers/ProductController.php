@@ -1,4 +1,5 @@
 <?php 
+date_default_timezone_set('Asia/Amman');
 class Bidding_Store_ProductController extends Mage_Core_Controller_Front_Action
 {
 	public function viewAction()
@@ -7,7 +8,7 @@ class Bidding_Store_ProductController extends Mage_Core_Controller_Front_Action
 		{
 		$_product = Mage::getModel('catalog/product')->load($this->getRequest()->getParam('id'));
 		
-			if ($_product->getId() && $_product->getCanBid() == 1)
+			if ($_product->getId() && $_product->getCanBid() == 1 && $_product->getEndBiddingDate() >= date('Y-m-d H:i:s'))
 			{
 				$this->loadLayout();
 				$this->renderLayout();

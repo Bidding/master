@@ -3,6 +3,7 @@
 	<customer_account>
 		<reference name="customer_account_navigation">
 			<action method="addLink" module="store"><name>winner_dashboard</name><path>store/index/winner/</path><lable>Winner List</lable></action>
+			<action method="addLink" module="store"><name>bidding_history</name><path>store/bidding/</path><lable>Bidding History</lable></action>
 		</reference>
 	</customer_account>
 	<store_index_index>
@@ -46,4 +47,16 @@
 			<block type="store/winner_dashboard" name="winner.dashboard" template="bidding/store/winner_dashboard.phtml" />
 		</reference>
 	</store_index_winner>
+	<store_bidding_index>
+		<update handle="customer_account" />
+		<reference name="content">
+			<block type="store/bidding_history" name="bidding.history" template="bidding/store/bidding/history.phtml" />
+		</reference>
+	</store_bidding_index>
+	<store_bidding_preview>
+		<update handle="customer_account" />
+		<reference name="content">
+			<block type="store/bidding_preview" name="bidding.history" template="bidding/store/bidding/preview.phtml" />
+		</reference>
+	</store_bidding_preview>
 </layout>

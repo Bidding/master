@@ -129,7 +129,11 @@ window.onload = function () {
 							{
 							  jQuery("#button<?php echo $_product->getId() ?>").attr("disabled", false); 
                        		  jQuery("#button<?php echo $_product->getId() ?>").delay(500).fadeIn(50);
-                       		window.socket.emit('send', { message: 1, PI: resp.PI, price: resp.price, bidder: resp.bidder, bidderTable: resp.bidderTable });
+                       		  window.socket.emit('send', { message: 1, PI: resp.PI, price: resp.price, bidder: resp.bidder, bidderTable: resp.bidderTable });
+                       		  if (resp.reload == 'true')
+                       		  {
+                           		  location.reload();
+                       		  }
 								
                        		}
 							else if (resp.action == 'false')
