@@ -34,45 +34,61 @@
 <?php $_helper = $this->helper('catalog/output'); ?>
 <?php $_product = $this->getProduct(); ?>
 
-<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div id="messages_product_view">
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+</div>
 <div class="product-view">
-    <div class="product-essential">
-        <div class="product-shop">
-            <div class="product-name">
-                <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
-            </div>
-            <div class="price-box">
+	<div class="product-essential">
+		<div class="product-shop">
+			<div class="product-name">
+				<h1>
+				<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+				</h1>
+			</div>
+			<div class="price-box">
 				<span class="reqular-price"> <span><?php echo $this->__('Open Bid Price:') . ' '?>
 				</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getOpeningPrice()); ?>
-				</span>
-				</span>
+				</span> </span>
+			</div>
+			<div class="price-box">
+				<span class="reqular-price"> <span><?php echo $this->__('Close Price:') . ' '?>
+				</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getPrice()); ?>
+				</span> </span>
+			</div>
+			<div class="price-box">
+				<span class="reqular-price"> <span><?php echo $this->__('Retail Price:') . ' '?>
+				</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getRetailPrice()); ?>
+				</span> </span>
 			</div>
 			<div class="countdown">
 				<p class="currentvalue">
 					<span id="countdown-product"></span>
 				</p>
-			</div> 
+			</div>
 			<style>
-				.highlight {
-					background-color: red;
-				}
-			</style>
-				<div class="price-box" style="text-align: center;">
-					<div class="price" id="price<?php echo $_product->getId() ?>">
-						<span id="price-box-<?php echo $_product->getId()?>"><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?></span>
-					</div>
+.highlight {
+	background-color: red;
+}
+</style>
+			<div class="price-box" style="text-align: center;">
+				<div class="price" id="price<?php echo $_product->getId() ?>">
+					<span id="price-box-<?php echo $_product->getId()?>"><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?>
+					</span>
 				</div>
-				<div>
-					<?php 
-					$bidder = $this->getCurrentBidder($_product->getId());
-					if ($bidder):
-					$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
-					?>
-					<span class="bidder"><?php echo $this->__('Bidder:')?> <span class="biddername<?php echo $_product->getId() ?>"><?php echo $bidder ?></span></span>
-					<?php endif; ?>
-				</div>
-				<?php $_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate())); ?>
-<script>
+			</div>
+			<div>
+			<?php
+			$bidder = $this->getCurrentBidder($_product->getId());
+			if ($bidder):
+			$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
+			?>
+				<span class="bidder"><?php echo $this->__('Bidder:')?> <span
+					class="biddername<?php echo $_product->getId() ?>"><?php echo $bidder ?>
+				</span> </span>
+				<?php endif; ?>
+			</div>
+			<?php $_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate())); ?>
+			<script>
 	jQuery("#countdown-product").countdown("<?php echo $_productDate ?>")
 	.on('update.countdown', function(event){
 		var format = '%H:%M:%S';
@@ -88,32 +104,34 @@
 		location.reload();
 	});
 </script>
-<!-- Ajax Request for Bid -->
-<div style="text-align: center; margin-top: 10px;">
+			<!-- Ajax Request for Bid -->
+			<div style="text-align: center; margin-top: 10px;">
 			<?php
 			$customerSession = $this->getCustomerSession();
 			if(!$customerSession->isLoggedIn())
 			{
-			?>
-			<button type="button" title="bid" class="button" id="view-bid-button" onclick="javascript:alert('Please login')">
-				<span>
-					<span><?php echo $this->__('Bid')?></span>
-				</span>
-			</button>
-			<?php	
-			} 
-			else
-			{	
-			?>
-			<form action="#" method="post" class="formbid<?php echo $_product->getId() ?>" id="formbid<?php echo $_product->getId() ?>">
-			<?php echo $this->getBlockHtml('formkey') ?>
-				<input type="hidden" name="productId" value="<?php echo $_product->getId() ?>" />
-				<button type="submit" title="bid" class="button" id="view-bid-button">
-					<span> <span><?php echo $this->__('Bid')?> </span>
-					</span>
+				?>
+				<button type="button" title="bid" class="button"
+					id="view-bid-button" onclick="javascript:alert('Please login')">
+					<span> <span><?php echo $this->__('Bid')?> </span> </span>
 				</button>
-			</form>
-			<script>
+				<?php
+			}
+			else
+			{
+				?>
+				<form action="#" method="post"
+					class="formbid<?php echo $_product->getId() ?>"
+					id="formbid<?php echo $_product->getId() ?>">
+					<?php echo $this->getBlockHtml('formkey') ?>
+					<input type="hidden" name="productId"
+						value="<?php echo $_product->getId() ?>" />
+					<button type="submit" title="bid" class="button"
+						id="view-bid-button">
+						<span> <span><?php echo $this->__('Bid')?> </span> </span>
+					</button>
+				</form>
+				<script>
 				jQuery("#formbid<?php echo $_product->getId() ?>").submit(function(event) {
 					event.preventDefault();
 					jQuery("#view-bid-button").attr("disabled", true);
@@ -130,6 +148,10 @@
 							  jQuery("#view-bid-button").attr("disabled", false); 
                        		  jQuery("#view-bid-button").delay(500).fadeIn(50);
                        		 window.socket.emit('send', { message: 1, PI: resp.PI, price: resp.price, bidder: resp.bidder, bidderTable: resp.bidderTable });
+                      		  if (resp.reload == 'true')
+                       		  {
+                           		  location.reload();
+                       		  }
                        		}
 							else if (resp.action == 'false')
 							{
@@ -149,21 +171,25 @@
 			<?php
 			}
 			?>
+			</div>
+			<!-- Ajax Request for Bid -->
+			<div class="short-description">
+				<h2>
+				<?php echo $this->__('Quick Overview') ?>
+				</h2>
+				<div class="std">
+				<?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>
+				</div>
+			</div>
 		</div>
-<!-- Ajax Request for Bid -->
-                <div class="short-description">
-                    <h2><?php echo $this->__('Quick Overview') ?></h2>
-                    <div class="std"><?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?></div>
-                </div>
-        </div>
 
-        <div class="product-img-box">
-            <?php echo $this->getChildHtml('media') ?>
-        </div>
+		<div class="product-img-box">
+		<?php echo $this->getChildHtml('media') ?>
+		</div>
 
-        <div class="clearer"></div>
-    </div>
-    <div class="product-collateral">
-		<?php echo $_product->getDescription(); ?>
-    </div>
+		<div class="clearer"></div>
+	</div>
+	<div class="product-collateral">
+	<?php echo $_product->getDescription(); ?>
+	</div>
 </div>

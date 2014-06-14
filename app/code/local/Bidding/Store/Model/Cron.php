@@ -27,8 +27,6 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 					$winner->setWinDate(date('Y-m-d H:i:s'));
 					$winner->setBought(0);
 					$winner->save();
-					
-					Mage::log($product->getName());
 					$customer = Mage::getModel('customer/customer')->load($winner_bidder[0]['customer_id']);
 					$this->_sendEmail($customer->getEmail() , $customer->getName(), $product->getName());
 				}

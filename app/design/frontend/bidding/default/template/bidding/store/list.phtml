@@ -1,4 +1,4 @@
-<?php 
+<?php
 $_products = $this->getProducts();
 if ($_products->count()):
 ?>
@@ -26,54 +26,69 @@ window.onload = function () {
 }
 //-->
 </script>
-<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div id="messages_product_view">
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+</div>
 
 <ul class="col1-layout products-grid">
-	<?php
-	$i = 1;
-	foreach ($_products as $_product):
-	$_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate()));
-	?>
-	<li class="item"><a href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
+<?php
+$i = 1;
+foreach ($_products as $_product):
+$_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate()));
+?>
+	<li class="item"><a
+		href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
 		class="product-image"> <img
 			src="<?php echo $_product->getImageUrl() ?>" width="135" height="135" />
 	</a>
 		<h1 class="product-name">
-			<a href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
+			<a
+				href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
 				title="<?php $_product->getName() ?>"><?php echo $_product->getName() ?>
 			</a>
 		</h1>
 		<div class="price-box">
 			<span class="reqular-price"> <span><?php echo $this->__('Open Bid Price:') . ' '?>
 			</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getOpeningPrice()); ?>
-			</span>
-			</span>
+			</span> </span>
+		</div>
+		<div class="price-box">
+			<span class="reqular-price"> <span><?php echo $this->__('Close Price:') . ' '?>
+			</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getPrice()); ?>
+			</span> </span>
+		</div>
+		<div class="price-box">
+			<span class="reqular-price"> <span><?php echo $this->__('Retail Price:') . ' '?>
+			</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getRetailPrice()); ?>
+			</span> </span>
 		</div>
 		<div class="countdown">
 			<p class="currentvalue">
 				<span id="clock<?php echo $i; ?>"></span>
 			</p>
-		</div> 
+		</div>
 		<style>
-			.highlight {
-			background-color: red;
-			}
-		</style>
+.highlight {
+	background-color: red;
+}
+</style>
 		<div class="price-box" style="text-align: center;">
 			<div class="price" id="price<?php echo $_product->getId() ?>">
-				<span id="price-box-<?php echo $_product->getId()?>"><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?></span>
+				<span id="price-box-<?php echo $_product->getId()?>"><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?>
+				</span>
 			</div>
 		</div>
 		<div>
-			<?php 
-			$bidder = $this->getCurrentBidder($_product->getId());
-			if ($bidder):
-			$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
-			?>
-			<span class="bidder"><?php echo $this->__('Bidder:')?> <span class="biddername<?php echo $_product->getId() ?>"><?php echo $bidder ?></span></span>
+		<?php
+		$bidder = $this->getCurrentBidder($_product->getId());
+		if ($bidder):
+		$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
+		?>
+			<span class="bidder"><?php echo $this->__('Bidder:')?> <span
+				class="biddername<?php echo $_product->getId() ?>"><?php echo $bidder ?>
+			</span> </span>
 			<?php endif; ?>
-		</div>	
-<script>
+		</div> <script>
 	jQuery("#clock" + <?php echo $i; ?>).countdown("<?php echo $_productDate ?>")
 	.on('update.countdown', function(event){
 		var format = '%H:%M:%S';
@@ -90,27 +105,30 @@ window.onload = function () {
 	});
 </script>
 		<div style="text-align: center; margin-top: 10px;">
-			<?php
-			$customerSession = $this->getCustomerSession();
-			if(!$customerSession->isLoggedIn())
-			{
+		<?php
+		$customerSession = $this->getCustomerSession();
+		if(!$customerSession->isLoggedIn())
+		{
 			?>
-			<button type="button" title="bid" class="button" id="button<?php echo $_product->getId() ?>" onclick="javascript:alert('Please login')">
-				<span>
-					<span><?php echo $this->__('Bid')?></span>
-				</span>
+			<button type="button" title="bid" class="button"
+				id="button<?php echo $_product->getId() ?>"
+				onclick="javascript:alert('Please login')">
+				<span> <span><?php echo $this->__('Bid')?> </span> </span>
 			</button>
-			<?php	
-			} 
-			else
-			{	
+			<?php
+		}
+		else
+		{
 			?>
-			<form action="#" method="post" class="formbid<?php echo $_product->getId() ?>" id="formbid<?php echo $_product->getId() ?>">
-			<?php echo $this->getBlockHtml('formkey') ?>
-				<input type="hidden" name="productId" value="<?php echo $_product->getId() ?>" />
-				<button type="submit" title="bid" class="button" id="button<?php echo $_product->getId() ?>">
-					<span> <span><?php echo $this->__('Bid')?> </span>
-					</span>
+			<form action="#" method="post"
+				class="formbid<?php echo $_product->getId() ?>"
+				id="formbid<?php echo $_product->getId() ?>">
+				<?php echo $this->getBlockHtml('formkey') ?>
+				<input type="hidden" name="productId"
+					value="<?php echo $_product->getId() ?>" />
+				<button type="submit" title="bid" class="button"
+					id="button<?php echo $_product->getId() ?>">
+					<span> <span><?php echo $this->__('Bid')?> </span> </span>
 				</button>
 			</form>
 			<script>
@@ -152,8 +170,8 @@ window.onload = function () {
 				});
 			</script>
 			<?php
-			}
-			?>
+		}
+		?>
 		</div>
 	</li>
 	<?php
@@ -161,11 +179,11 @@ window.onload = function () {
 	endforeach;
 	?>
 </ul>
-<?php 
-else :
-?>
+	<?php
+	else :
+	?>
 <p class="note-msg">
-	<?php echo $this->__('There are no products for bid right now')?>
+<?php echo $this->__('There are no products for bid right now')?>
 </p>
 <?php
 endif;
