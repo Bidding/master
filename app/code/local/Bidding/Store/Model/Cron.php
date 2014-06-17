@@ -20,37 +20,56 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 					->addFieldToFilter('product_id', array('eq' => $product->getId()));
 					$winner_bidder->getSelect()->order('id desc');
 					$winner_bidder = $winner_bidder->getData();
-					
-					$winner = Mage::getModel('points/winner');
-					$winner->setCustomerId($winner_bidder[0]['customer_id']);
-					$winner->setProductId($product->getId());
-					$winner->setWinDate(date('Y-m-d H:i:s'));
-					$winner->setBought(0);
-					$winner->save();
-					$customer = Mage::getModel('customer/customer')->load($winner_bidder[0]['customer_id']);
-					$this->_sendEmail($customer->getEmail() , $customer->getName(), $product->getName());
+					if ($this->getTotalBid($winner_bidder[0]['customer_id'], $product->getId()) >= 5)
+					{
+						$winner = Mage::getModel('points/winner');
+						$winner->setCustomerId($winner_bidder[0]['customer_id']);
+						$winner->setProductId($product->getId());
+						$winner->setWinDate(date('Y-m-d H:i:s'));
+						$winner->setBought(0);
+						$winner->save();
+						$customer = Mage::getModel('customer/customer')->load($winner_bidder[0]['customer_id']);
+						$this->_sendEmail($customer->getEmail() , $customer->getName(), $product->getName());
+						echo $customer->getEmail() . ' Win: ' . $product->getName();
+						echo '<br />';
+					}
+				}
+				else 
+				{
+					echo 'Not Win: ' . $product->getName();
+					echo '<br />';
 				}
 			}
 		}
+		echo 'cronWinner has beeb excuted';
+		echo '<br />';
 	}
-	
+
 	public function checkExpired()
 	{
 		$yesterdayDate = date('Y-m-d H:i:s', strtotime("-1 days"));
 		$winner_produts = Mage::getModel('points/winner')->getCollection()
-							->addFieldToFilter('win_date', array('lteq' => $yesterdayDate));
+		->addFieldToFilter('win_date', array('lteq' => $yesterdayDate));
+	}
+
+	protected function getTotalBid($bidder_id, $product_id)
+	{
+		$count = Mage::getModel('points/bid')->getCollection()
+		->addFieldToFilter('customer_id', array('eq' => $bidder_id))
+		->addFieldToFilter('product_id', array('eq' => $product_id));
+		return $count->count();
 	}
 
 	private function _sendEmail($to_email, $to_name, $product_name)
 	{
 		$emailTemplate = Mage::getModel('core/email_template')->loadDefault('winner_email_template');
-		
+
 		$emailTemplateVariables = array();
 		$emailTemplateVariables['product_name'] = $product_name;
 		$emailTemplateVariables['customer_name'] = $to_name;
 		$emailTemplateVariables['product_url'] = Mage::getUrl('bidding/index/winner');
 		$processedTemplate = $emailTemplate->getProcessedTemplate($emailTemplateVariables);
-		
+
 		$emailTemplate->send($to_email, $to_name, $emailTemplateVariables);
 	}
 }
