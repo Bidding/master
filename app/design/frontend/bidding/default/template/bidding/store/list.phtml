@@ -5,7 +5,7 @@ if ($_products->count()):
 <script type="text/javascript">
 <!--
 window.onload = function () {
-	window.socket = io.connect('http://127.0.0.1:3700');
+	window.socket = io.connect('http://10.10.0.78:3700');
 	socket.on('message', function (data) {
 		jQuery("#price-box-" + data.PI).html(data.price);
 		jQuery("#price-box-" + data.PI).addClass('highlight').delay(500).queue(
@@ -154,13 +154,9 @@ $_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate()));
                        		  }
 								
                        		}
-							else if (resp.action == 'false')
-							{
-								location.reload();
-							}
                        		else
                        		{
-                       			alert('Please log in to access it');
+                       			location.reload();
                        		}
 						},
 						error: function(){
