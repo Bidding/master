@@ -116,6 +116,11 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 
 	private function setCustomerBid($customer_id, $product_id, $customer_name)
 	{
+		$job = MAge::getModel('store/bidding_job');
+		$job->setCustomerId($customer_id)
+		->setProductId($product_id)
+		->enqueue();
+/*
 		$points = Mage::getModel('points/points')->load($customer_id, 'customer_id');
 		$bidHistory = Mage::getModel('points/bid');
 
@@ -130,10 +135,10 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 		->setOrder('new_price', 'DESC')
 		->setPageSize(1);
 		$check_uniq_bid = $check_uniq_bid->getData();
-		if ($check_uniq_bid[0]['new_price'] >= $new_price)
-		{
-			return false;
-		}
+		//if ($check_uniq_bid[0]['new_price'] >= $new_price)
+		//{
+		//	return false;
+		//}
 
 		$bidHistory->setPrice($_product->getCurrentPrice());
 		$bidHistory->setNewPrice($new_price);
@@ -147,6 +152,8 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 		$points->save();
 
 		$data = array('action' => 'true','PI' => $product_id, 'price'=> Mage::helper('core')->currency($_product->getCurrentPrice()), 'bidder'=> $customer_name, 'bidderTable' => "<tr><td>".Mage::helper('core')->currency($_product->getCurrentPrice())."</td><td>".$customer_name."</td></tr>");
+*/
+		$data = array('action' => 'true');
 		return $data;
 	}
 
