@@ -54,7 +54,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 					else
 					{
 						//if ($newPrice < $_product->getPrice())
-						//{
+							//{
 						$bid_result = $this->setCustomerBid($customerSession->getCustomerId(), $data['productId'], $customerSession->getCustomer()->getName());
 						if (!$bid_result)
 						{
@@ -76,10 +76,11 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 							$session->addError($this->__("Your credit will end soon"));
 							$data = array_merge($data, array('reload' => 'true'));
 						}
-							
+
 						$data = array_merge($data , $bid_result);
 
 						echo json_encode($data);
+						//$this->_redirect('bidding/product/view', array('id' => $_product->getId()));
 						//}
 						if ($newPrice == $_product->getPrice())
 						{
@@ -116,29 +117,46 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 
 	private function setCustomerBid($customer_id, $product_id, $customer_name)
 	{
-		$job = MAge::getModel('store/bidding_job');
-		$job->setCustomerId($customer_id)
-		->setProductId($product_id)
-		->enqueue();
-/*
-		$points = Mage::getModel('points/points')->load($customer_id, 'customer_id');
-		$bidHistory = Mage::getModel('points/bid');
+		$resource = Mage::getSingleton('core/resource');
+		$writeConnection = $resource->getConnection('core_write');
+		$readConnection = $resource->getConnection('core_read');
+		$query1 = "
+		INSERT INTO customer_bid_history (customer_id, product_id, new_price, bid_date)
+		SELECT " . $customer_id . ", " . $product_id . ", sum(value), '" . date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())) . "' FROM catalog_product_entity_decimal WHERE attribute_id IN (138, 139) AND entity_id = " . $product_id;
+		
+		$query2 = "
+		UPDATE catalog_product_entity_decimal AS t1, (
+		SELECT sum(value) AS price FROM catalog_product_entity_decimal WHERE attribute_id IN (138, 139) AND entity_id = " . $product_id . "
+		) as t2
+		SET t1.value = t2.price
+		WHERE t1.attribute_id = 139 AND entity_id = " . $product_id
+		;
+		
+		$query3 = "
+		SELECT value FROM catalog_product_entity_decimal WHERE attribute_id = 139 and entity_id = " . $product_id;
+		
+		$writeConnection->query($query1);
+		$writeConnection->query($query2);
+		
+		$new_price = $readConnection->fetchOne($query3);
+		$data = array('action' => 'true',
+				'PI' => $product_id, 
+				'price'=> Mage::helper('core')->currency($new_price), 
+				'bidder'=> $customer_name, 
+				'bidderTable' => "<tr><td>".Mage::helper('core')->currency($new_price)."</td><td>".$customer_name."</td></tr>");
+		return $data;
+		/*
+		 $points = Mage::getModel('points/points')->load($customer_id, 'customer_id');
+		$points->setBalance($points->getBalance() - 1 );
+		$points->save();
 
+		$bidHistory = Mage::getModel('points/bid');
 		$_product = Mage::getModel('catalog/product')->load($product_id);
+
 		$new_price = $_product->getCurrentPrice() + $_product->getCpc();
 
 		$bidHistory->setCustomerId($customer_id);
 		$bidHistory->setProductId($product_id);
-
-		$check_uniq_bid = Mage::getModel('points/bid')->getCollection()
-		->addFieldToFilter('product_id', array('eq' => $product_id))
-		->setOrder('new_price', 'DESC')
-		->setPageSize(1);
-		$check_uniq_bid = $check_uniq_bid->getData();
-		//if ($check_uniq_bid[0]['new_price'] >= $new_price)
-		//{
-		//	return false;
-		//}
 
 		$bidHistory->setPrice($_product->getCurrentPrice());
 		$bidHistory->setNewPrice($new_price);
@@ -147,14 +165,10 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 
 		$_product->setCurrentPrice($new_price);
 		$_product->save();
+		*/
 
-		$points->setBalance($points->getBalance() - 1 );
-		$points->save();
-
-		$data = array('action' => 'true','PI' => $product_id, 'price'=> Mage::helper('core')->currency($_product->getCurrentPrice()), 'bidder'=> $customer_name, 'bidderTable' => "<tr><td>".Mage::helper('core')->currency($_product->getCurrentPrice())."</td><td>".$customer_name."</td></tr>");
-*/
-		$data = array('action' => 'true');
-		return $data;
+		//$data = array('action' => 'true','PI' => $product_id, 'price'=> Mage::helper('core')->currency($_product->getCurrentPrice()), 'bidder'=> $customer_name, 'bidderTable' => "<tr><td>".Mage::helper('core')->currency($_product->getCurrentPrice())."</td><td>".$customer_name."</td></tr>");
+		//return $data;
 	}
 
 	protected function getTotalBid($bidder_id, $product_id)
