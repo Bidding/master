@@ -1,0 +1,69 @@
+<?php
+$_products = $this->getProducts();
+if ($_products->count()):
+	?>
+<script type="text/javascript">
+<!--
+window.onload = function () {
+	window.socket = io.connect('http://www.auctionsvip.com:3700');
+	socket.on('message', function (data) {
+		jQuery("#price-box-" + data.PI).html(data.price);
+		jQuery("#price-box-" + data.PI).parent().parent().addClass('highlight').delay(500).queue(
+			function(next){
+				jQuery("#price-box-" + data.PI).parent().parent().removeClass('highlight');
+				next();
+			}
+			);
+
+		jQuery(".biddername" + data.PI).html(data.bidder);
+		jQuery(".biddername" + data.PI).parent().parent().addClass('highlight').delay(500).queue(
+			function(next){
+				jQuery(".biddername" + data.PI).parent().parent().removeClass('highlight');
+				next();
+			}
+			);
+	});
+}
+//-->
+</script>
+<div id="messages_product_view">
+	<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+</div>
+<div class="container homeProducts">
+	<div class="row">
+		<?php
+		$i = 1;
+		foreach ($_products as $_product):
+			$_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate()));
+		?>
+		<div class="item span3"><a
+			href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
+			class="product-image"> <img
+			src="<?php echo $_product->getImageUrl() ?>" />
+			<div class="state closed"></div>
+		</a>
+		<h1 class="product-name">
+			<a
+			href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
+			title="<?php $_product->getName() ?>"><?php echo $_product->getName() ?>
+		</a>
+	</h1>
+
+</div>
+
+</div>
+<?php
+$i++;
+endforeach;
+?>
+</div>
+</div>
+<?php
+else :
+	?>
+<p class="note-msg">
+	<?php echo $this->__('There are no products for bid right now')?>
+</p>
+<?php
+endif;
+?>

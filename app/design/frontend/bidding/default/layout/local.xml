@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+	<default>
+		<reference name="head">
+			<action method="addCss">
+				<stylesheet>css/bootstrap.css</stylesheet>
+			</action>
+			<action method="addCss">
+				<stylesheet>css/bootstrap-responsive.css</stylesheet>
+			</action>
+		</reference>
+	</default>
+</layout>
