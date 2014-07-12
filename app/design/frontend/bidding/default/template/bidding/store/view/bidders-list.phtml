@@ -1,28 +1,28 @@
 <div class="product-view bidders-list">
-	<div class="product-essential">
 		<div class="title">
-			<h1><?php echo $this->__('Bid History')?></h1>
+			<h2 class="legend"><?php echo $this->__('History')?></h2>
 		</div>
 		<div class="content">
 			<table border="0" cellspacing="0" cellpadding="0" id="bidder-table-<?php echo $this->getRequest()->getParam('id')?>">
-				<thead>
+				<?php /*<thead>
 					<tr>
-						<td><?php echo $this->__('Bid')?></td>
 						<td><?php echo $this->__('Bidder')?></td>
+						<td><?php echo $this->__('Bid')?></td>
+
 					</tr>
-				</thead>
+				</thead>*/?>
 				<tbody>
 					<?php 
 					$bidders = $this->getBidders();
 					foreach ($bidders as $bidder):
 					?>
 					<tr>
-						<td><?php echo Mage::helper('core')->currency($bidder->getNewPrice()) ?></td>
-						<td><?php echo Mage::getModel('customer/customer')->load($bidder->getCustomerId())->getName() ?></td>
+						<td class="bidderName">- <?php echo Mage::getModel('customer/customer')->load($bidder->getCustomerId())->getName() ?></td>
+						<td class="bidPrice"><?php echo Mage::helper('core')->currency($bidder->getNewPrice()) ?> <?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?></td>
+
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
 			</table>
 		</div>
-	</div>
 </div>

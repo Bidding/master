@@ -41,7 +41,6 @@
         echo $_helper->productAttribute($_product, $_img, 'image');
     ?>
 </p>
-<p class="zoom-notice" id="track_hint"><?php echo $this->__('Mouse over the image for zoom') ?></p>
 
 
 <?php else: ?>
@@ -54,12 +53,11 @@
 <?php endif; ?>
 <?php if (count($this->getGalleryImages()) > 0): ?>
 <div class="more-views">
-    <h2><?php echo $this->__('More Views') ?></h2>
     <ul>
     <?php foreach ($this->getGalleryImages() as $_image): ?>
 	
         <li>
-            <a onclick="imageswitcher('<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'image', $_image->getFile());?>');" title="<?php echo $this->htmlEscape($_image->getLabel()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(56); ?>" width="56" height="56" alt="<?php echo $this->htmlEscape($_image->getLabel()) ?>" /></a>
+            <a onclick="imageswitcher('<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'image', $_image->getFile());?>');" title="<?php echo $this->htmlEscape($_image->getLabel()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile()) ?>"  alt="<?php echo $this->htmlEscape($_image->getLabel()) ?>" /></a>
         </li>
     <?php endforeach; ?>
     </ul>

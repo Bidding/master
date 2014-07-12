@@ -65,6 +65,8 @@ Default layout, loads most of the pages
                                 <action method="addJs"><script>jquery/jquery-2.0.2.js</script></action>
 				<action method="addJs"><script>jquery/noConflict.js</script></action>
 				<action method="addJs"><script>jquery/jquery.countdown.js</script></action>
+                <action method="addJs"><script>jquery.flexslider-min.js</script></action>
+                
             </block>
 
             <block type="core/text_list" name="after_body_start" as="after_body_start" translate="label">

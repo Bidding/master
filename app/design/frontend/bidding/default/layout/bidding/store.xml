@@ -19,7 +19,7 @@
 	</store_index_index>
 	<store_product_view>
 		<reference name="root">
-			<action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+			<action method="setTemplate"><template>page/1column.phtml</template></action>
 		</reference>
 		<reference name="head">
 		<action method="addJs"><script>socket/push.js</script></action>
@@ -35,11 +35,11 @@
                 <block type="catalog/product_view_media" name="product.info.media" as="media" template="bidding/store/view/media.phtml"/>
                 <action method="unsetCallChild"><child>container1</child><call>ifEquals</call><if>0</if><key>alias_in_layout</key><key>options_container</key></action>
                 <action method="unsetCallChild"><child>container2</child><call>ifEquals</call><if>0</if><key>alias_in_layout</key><key>options_container</key></action>
+                        	<block type="store/product_listofbidders" name="bidders.list" as="bidders.list" template="bidding/store/view/bidders-list.phtml" />
+
             </block>
         </reference>
-        <reference name="right">
-        	<block type="store/product_listofbidders" name="bidders.list" template="bidding/store/view/bidders-list.phtml" />
-        </reference>
+
 	</store_product_view>
 	<store_index_winner>
 		<update handle="customer_account" />

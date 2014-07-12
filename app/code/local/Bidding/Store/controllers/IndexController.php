@@ -122,18 +122,18 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 			
 		$query1 = "
 		INSERT INTO customer_bid_history (customer_id, product_id, new_price, bid_date)
-		SELECT " . $customer_id . ", " . $product_id . ", sum(value), '" . date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())) . "' FROM catalog_product_entity_decimal WHERE attribute_id IN (148, 149) AND entity_id = " . $product_id;
+		SELECT " . $customer_id . ", " . $product_id . ", sum(value), '" . date("Y-m-d H:i:s", Mage::getModel('core/date')->timestamp(time())) . "' FROM catalog_product_entity_decimal WHERE attribute_id IN (138, 139) AND entity_id = " . $product_id;
 
 		$query2 = "
 		UPDATE catalog_product_entity_decimal AS t1, (
-		SELECT sum(value) AS price FROM catalog_product_entity_decimal WHERE attribute_id IN (148, 149) AND entity_id = " . $product_id . "
+		SELECT sum(value) AS price FROM catalog_product_entity_decimal WHERE attribute_id IN (138, 139) AND entity_id = " . $product_id . "
 		) as t2
 		SET t1.value = t2.price
-		WHERE t1.attribute_id = 149 AND entity_id = " . $product_id
+		WHERE t1.attribute_id = 139 AND entity_id = " . $product_id
 		;
 
 		$query3 = "
-		SELECT value FROM catalog_product_entity_decimal WHERE attribute_id = 149 and entity_id = " . $product_id;
+		SELECT value FROM catalog_product_entity_decimal WHERE attribute_id = 139 and entity_id = " . $product_id;
 
 		$writeConnection->query($query1);
 		$writeConnection->query($query2);
@@ -143,7 +143,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 				'PI' => $product_id, 
 				'price'=> Mage::helper('core')->currency($new_price), 
 				'bidder'=> $customer_name, 
-				'bidderTable' => "<tr><td>".Mage::helper('core')->currency($new_price)."</td><td>".$customer_name."</td></tr>");
+				'bidderTable' => "<tr><td class=\"bidderName newEntry\">- ".$customer_name."</td><td class=\"bidPrice newEntry\">".Mage::helper('core')->currency($new_price)."</td></tr>");
 		return $data;
 	}
 

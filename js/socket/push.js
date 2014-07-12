@@ -1,6 +1,6 @@
 window.onload = function() {
  
-     window.socket = io.connect('http://127.0.0.1:3700');
+     window.socket = io.connect('http://www.auctionsvip.com:3700');
     var sendButton = document.getElementById("view-bid-button");
     socket.on('message', function (data) {
         if(data.message) {
@@ -19,9 +19,13 @@ window.onload = function() {
    					next();
    				}
    		  	);
-   		  
+   		     if(jQuery("#bidder-table-" + data.PI + " tr").length >= 10){
       		  jQuery("#bidder-table-" + data.PI + " tr:last").remove();
        		  jQuery("#bidder-table-" + data.PI + " tbody tr:first").before(data.bidderTable);
+            }
+            else{
+            jQuery("#bidder-table-" + data.PI + " tbody tr:first").before(data.bidderTable);
+            }
         } else {
             console.log("There is a problem:", data);
         }

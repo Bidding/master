@@ -16,9 +16,9 @@ window.onload = function () {
 			);
 
 		jQuery(".biddername" + data.PI).html(data.bidder);
-		jQuery(".biddername" + data.PI).parent().parent().addClass('highlight').delay(500).queue(
+		jQuery(".biddername" + data.PI).addClass('highlight').delay(500).queue(
 			function(next){
-				jQuery(".biddername" + data.PI).parent().parent().removeClass('highlight');
+				jQuery(".biddername" + data.PI).removeClass('highlight');
 				next();
 			}
 			);
@@ -29,17 +29,20 @@ window.onload = function () {
 <div id="messages_product_view">
 	<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 </div>
-<div class="container homeProducts">
-	<div class="row">
+		<?php
+		$customerSession = $this->getCustomerSession();?>
+<div class="flexslider">
+	<ul class="slides">
 		<?php
 		$i = 1;
 		foreach ($_products as $_product):
 			$_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate()));
 		?>
-		<div class="item span3"><a
+		<li class="item"><a
 			href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
-			class="product-image"> <img
-			src="<?php echo $_product->getImageUrl() ?>" />
+			class="product-image">
+			<div class="clickPrice">2$</div>
+			 <img src="<?php echo $_product->getImageUrl() ?>" />
 		</a>
 		<h1 class="product-name">
 			<a
@@ -47,39 +50,27 @@ window.onload = function () {
 			title="<?php $_product->getName() ?>"><?php echo $_product->getName() ?>
 		</a>
 	</h1>
-	<div class="price-box" style="display:none">
-		<span class="reqular-price"> <span><?php echo $this->__('Open Bid Price:') . ' '?>
-		</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getOpeningPrice()); ?>
-	</span> </span>
-</div>
-<div class="price-box" style="display:none">
-	<span class="reqular-price"> <span><?php echo $this->__('Close Price:') . ' '?>
-	</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getPrice()); ?>
-</span> </span>
-</div>
-<div class="price-box" style="display:none">
-	<span class="reqular-price"> <span><?php echo $this->__('Retail Price:') . ' '?>
-	</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getRetailPrice()); ?>
-</span> </span>
-</div>
-<div class="countdown" style="display:none">
-	<p class="currentvalue">
-		<span ></span>
-	</p>
-</div>
+	<div class="bidOptions">
 
 
+		<div class="section">
+					<?php 
+		if($customerSession->isLoggedIn()):?>
+		<div>
+			<span id="clock<?php echo $i; ?>"></span>
+		</div>
 
-<div class="bidOptions">
-	<div class="section left">
-		<div>Timer : <span id="clock<?php echo $i; ?>"></span></div>
-		<div>	<div class="price" id="price<?php echo $_product->getId() ?>">
-		<span id="price-box-<?php echo $_product->getId()?>"><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?>
-		</span>
-	</div></div>
+		<?php endif;?>
+		<div>
+		<div class="price" id="price<?php echo $_product->getId() ?>" style="margin:0">
+			<span id="price-box-<?php echo $_product->getId()?>" class="largerF">
+				<?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?>
+			</span>
+		</div>
 	</div>
-			<?php
-		$customerSession = $this->getCustomerSession();
+		</div>
+
+		<?php 
 		if(!$customerSession->isLoggedIn())
 		{
 			?><div class="section center">
@@ -88,14 +79,22 @@ window.onload = function () {
 			onclick="javascript:alert('Please login')">
 			<?php echo $this->__('Bid')?>
 		</button>
-		
-		</div>
-		<?php
-	}
-	else
-	{
-		?>
-		<div class="section center">
+
+	</div>
+	<?php $bidder = $this->getCurrentBidder($_product->getId());
+	if ($bidder):
+		$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
+	?>
+	<div class="section right">
+		<div><?php echo $this->__('Bidder')?></div>
+		<div class="biddername<?php echo $_product->getId() ?>"><?php echo $bidder ?></div>
+	</div>
+<?php endif;
+}
+else
+{
+	?>
+	<div class="section center">
 		<form action="#" method="post"
 		class="formbid<?php echo $_product->getId() ?>"
 		id="formbid<?php echo $_product->getId() ?>">
@@ -109,38 +108,56 @@ window.onload = function () {
 
 </form>
 </div>
-	
-	<?php $bidder = $this->getCurrentBidder($_product->getId());
-	if ($bidder):
-		$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
-	?>
+
+<?php 
+$bidder = $this->getCurrentBidder($_product->getId());
+if($bidder):		
+	$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
+?>
 	<div class="section right">
-		<div><?php echo $this->__('Bidder')?></div>
-		<div><?php echo $bidder ?></div>
+		<div class="winner"><?php echo $this->__('Bidder')?></div>
+		<div class="biddername<?php echo $_product->getId() ?>"><?php echo $bidder ?></div>
 	</div>
 <?php endif; ?>
+<?php /*
+<div class="wideSection">
+	<div class="price-box Section" >
+		<span class="reqular-price"> <?php echo $this->__('Open Bid Price:') . ' '?>
+		</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getOpeningPrice()); ?>
+	</span> 
+</div>
+<div class="price-box Section" >
+	<span class="reqular-price"> <?php echo $this->__('Close Price:') . ' '?>
+	</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getPrice()); ?>
+</span> 
+</div>
+<div class="price-box Section" >
+	<span class="reqular-price"> <?php echo $this->__('Retail Price:') . ' '?>
+	</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getRetailPrice()); ?>
+</span> 
+</div>
+</div>
 
+*/?>
 </div>
 
 
-<div>
-	
-	</div> <script>
-	jQuery("#clock" + <?php echo $i; ?>).countdown("<?php echo $_productDate ?>")
-	.on('update.countdown', function(event){
-		var format = '%H:%M:%S';
-		if (event.offset.days > 0){
-			format = '%-d day%!d ' + format;
-		}
-		if (event.offset.weeks > 0){
-			format = '%-w week%!w ' + format;
-		}
-		jQuery("#clock" + <?php echo $i; ?>).html(event.strftime(format));
-	})
-	.on('finish.countdown', function(event) {
-		location.reload();
-	});
-	</script>
+<script>
+jQuery("#clock" + <?php echo $i; ?>).countdown("<?php echo $_productDate ?>")
+.on('update.countdown', function(event){
+	var format = '%H:%M:%S';
+	if (event.offset.days > 0){
+		format = '%-d day%!d ' + format;
+	}
+	if (event.offset.weeks > 0){
+		format = '%-w week%!w ' + format;
+	}
+	jQuery("#clock" + <?php echo $i; ?>).html(event.strftime(format));
+})
+.on('finish.countdown', function(event) {
+	location.reload();
+});
+</script>
 
 <script>
 jQuery("#formbid<?php echo $_product->getId() ?>").submit(function(event) {
@@ -179,14 +196,14 @@ jQuery("#formbid<?php echo $_product->getId() ?>").submit(function(event) {
 <?php
 }
 ?>
-</div>
+</li>
 
-</div>
+
 <?php
 $i++;
 endforeach;
 ?>
-</div>
+</ul>
 </div>
 <?php
 else :
