@@ -20,10 +20,12 @@ window.onload = function() {
    				}
    		  	);
    		     if(jQuery("#bidder-table-" + data.PI + " tr").length >= 10){
+            jQuery(".bidders-list tr td").removeClass('newEntry');
       		  jQuery("#bidder-table-" + data.PI + " tr:last").remove();
        		  jQuery("#bidder-table-" + data.PI + " tbody tr:first").before(data.bidderTable);
             }
             else{
+            jQuery(".bidders-list tr td").removeClass('newEntry');
             jQuery("#bidder-table-" + data.PI + " tbody tr:first").before(data.bidderTable);
             }
         } else {
