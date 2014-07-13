@@ -1,12 +1,12 @@
 <?php
-$_products = $this->getProducts();
+$_products = $this->getClosedBidding();
 if ($_products->count()):
 	?>
 
 <div id="messages_product_view">
 	<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 </div>
-<div class="clickPrice absolute"><span><?php echo $this->__('Sold Numbers')?></span><p>60</p></div>
+<div class="clickPrice absolute"><span><?php echo $this->__('Sold Numbers')?></span><p><?php echo $_products->count() ?></p></div>
 <div class="flexslider">
 <ul class="slides">
 		<?php
