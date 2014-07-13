@@ -6,9 +6,9 @@
 			<action method="addCss">
 				<stylesheet>css/bootstrap.css</stylesheet>
 			</action>
-			<action method="addCss">
+<!-- 			<action method="addCss">
 				<stylesheet>css/bootstrap-responsive.css</stylesheet>
-			</action>
+			</action> -->
 			<action method="addCss">
 				<stylesheet>css/flexslider.css</stylesheet>
 			</action>
