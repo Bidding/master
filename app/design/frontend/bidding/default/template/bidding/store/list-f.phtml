@@ -1,5 +1,5 @@
 <?php
-$_products = $this->getProducts();
+$_products = $this->getNextBidding();
 if ($_products->count()):
 	?>
 
@@ -20,7 +20,7 @@ if ($_products->count()):
 			<a
 			href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
 			class="product-image">
-			<div class="clickPrice">2$</div>
+			<div class="clickPrice"><?php echo (int)$_product->getOpeningPrice() . '$'; ?></div>
 			 <img
 			src="<?php echo $_product->getImageUrl() ?>" />
 			<div class="state closed"></div>

@@ -50,12 +50,12 @@
 		$customerSession = $this->getCustomerSession();?>
 		<div class="section">
 					<?php 
-		if($customerSession->isLoggedIn()):?>
+		//if($customerSession->isLoggedIn()):?>
 		<div>
 			<span id="countdown-product"></span>
 		</div>
 
-		<?php endif;?>
+		<?php //endif;?>
 		<div>
 		<div class="price" id="price<?php echo $_product->getId() ?>">
 		<span id="price-box-<?php echo $_product->getId()?>"><?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?>
@@ -87,6 +87,15 @@
 else
 {
 	?>
+		<?php $bidder = $this->getCurrentBidder($_product->getId());
+	if ($bidder):
+		$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
+	?>
+	<div class="section right">
+		<div><?php echo $this->__('Bidder')?></div>
+		<div class="biddername<?php echo $_product->getId() ?>"><?php echo $bidder ?></div>
+	</div>
+<?php endif; ?>
 	<div class="section center">
 			<form action="#" method="post"
 	class="formbid<?php echo $_product->getId() ?>"
