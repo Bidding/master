@@ -138,6 +138,9 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 		$writeConnection->query($query1);
 		$writeConnection->query($query2);
 
+		$customer_points = Mage::getModel('points/points')->load($customer_id,'customer_id');
+		$customer_points->setBalance($customer_points->getBalance() - 1);
+		$customer_points->save();
 		$new_price = $readConnection->fetchOne($query3);
 		$data = array('action' => 'true',
 				'PI' => $product_id, 
