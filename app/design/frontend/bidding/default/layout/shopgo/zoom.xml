@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout version="0.1.0">
+    
+    <catalog_product_view>
+        <reference name="head">
+        <!-- Zoom -->
+            <action method="addCss" ifconfig="shopgo_zoom/general/enabled"><script>shopgo/zoom/css/jquery.swinxy-combined.css</script></action>        
+    	    <action method="addJs" ifconfig="shopgo_zoom/general/enabled"><script>shopgo/zoom/jquery.swinxy-combined.min.js</script></action>
+            <action method="addJs" ifconfig="shopgo_zoom/general/mouseweel"><script>shopgo/zoom/jquery.mousewheel.js</script></action>
+
+        <!-- End of Zoom -->
+        </reference>
+        <reference name="product.info.media">
+           <action method="setTemplate" ifconfig="shopgo_zoom/general/enabled"><template>shopgo/zoom/media.phtml</template></action>
+        </reference>
+    </catalog_product_view>
+</layout>
+

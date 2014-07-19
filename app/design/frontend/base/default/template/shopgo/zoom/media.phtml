@@ -1,0 +1,94 @@
+<?php
+$_product = $this->getProduct();
+$_helper = $this->helper('catalog/output');
+
+ $Shopgo_zoom_enabled = Mage::getStoreConfig('shopgo_zoom/general/enabled');
+ $Shopgo_zoom_mode = Mage::getStoreConfig('shopgo_zoom/general/mode');
+ $Shopgo_zoom_size = Mage::getStoreConfig('shopgo_zoom/general/size');
+ $Shopgo_zoom_dock_position = Mage::getStoreConfig('shopgo_zoom/general/dockposition');
+ $Shopgo_zoom_controls = Mage::getStoreConfig('shopgo_zoom/general/controls');
+ $Shopgo_zoom_img_multiplyer = Mage::getStoreConfig('shopgo_zoom/general/imgmultiplier');
+
+// Defaulting empty values
+ if(empty($Shopgo_zoom_size)){$Shopgo_zoom_size = '70';}
+
+
+?>
+
+
+<?php if($Shopgo_zoom_enabled):?>
+<?php 
+// Image Multiplyer 
+$img_url = $this->helper('catalog/image')->init($_product, 'image');
+$img_width = $img_url->getOriginalWidth() * $Shopgo_zoom_img_multiplyer; 
+$img_height = $img_url->getOriginalHeight() * $Shopgo_zoom_img_multiplyer; 
+
+?>
+
+
+ <p class="product-image">
+        <a class="sxzoom" id="zoom" href="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize($img_width,$img_height);?>">
+            <?php
+            $_img = '<img id="zoom-img" src="' . $this->helper('catalog/image')->init($_product, 'small_image'). '" alt="' . $this->htmlEscape($this->getImageLabel()) . '" title="' . $this->htmlEscape($this->getImageLabel()) . '"/>';
+            echo $_helper->productAttribute($_product, $_img, 'image');
+            ?>
+        </a>
+    </p>
+    <p class="zoom-notice" id="track_hint"><?php echo $this->__('Mouse over the image for zoom') ?></p>
+
+<?php else: //Else Zoom not Enabled?>
+
+        <p class="product-image">
+        <span class="zoom" id="zoom">
+            <?php
+            $_img = '<img id="zoom-img" src="' . $this->helper('catalog/image')->init($_product, 'image') . '" alt="' . $this->htmlEscape($this->getImageLabel()) . '" title="' . $this->htmlEscape($this->getImageLabel()) . '" />';
+            echo $_helper->productAttribute($_product, $_img, 'image');
+            ?>
+        </span>
+    </p>
+
+
+<?php endif;//Endif for the zoom?>
+
+    <?php if (count($this->getGalleryImages()) > 0): ?>
+        <div class="more-views">
+            <h2><?php echo $this->__('More Views') ?></h2>
+            <ul>
+                <?php foreach ($this->getGalleryImages() as $_image): ?>
+
+                    <li>
+                        <a class="zoom-thumbs" data-large="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'image', $_image->getFile())->resize($img_width,$img_height); ?>" title="<?php echo $this->htmlEscape($_image->getLabel()) ?>" data-baseimg="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'image', $_image->getFile()); ?>"><img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(56);?>"  alt="<?php echo $this->htmlEscape($_image->getLabel()) ?>" /></a>
+                    </li>
+
+                <?php endforeach; ?>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            jQuery('.zoom-thumbs').click(function(event) {
+                event.preventDefault();
+                jQuery('.sxzoom').swinxyzoom('load', jQuery(this).data('baseimg') , jQuery(this).data('large'));
+            });
+        </script>
+
+    <?php endif; ?>
+<script type="text/javascript">
+<?php
+
+switch ($Shopgo_zoom_mode) {
+    case "window":
+        echo "jQuery('.sxzoom').swinxyzoom({mode:'window',size: '".$Shopgo_zoom_size."%',  controls: ". $Shopgo_zoom_controls ."});";
+        break;
+    case "slippy":
+        echo "jQuery('.sxzoom').swinxyzoom({mode:'slippy', size: '".$Shopgo_zoom_size."%', controls: ". $Shopgo_zoom_controls ."});";
+        break;
+    case "dock":
+        echo "jQuery('.sxzoom').swinxyzoom({mode:'dock', size: '".$Shopgo_zoom_size."%', dock:{position: '". $Shopgo_zoom_dock_position ."'}, controls: ". $Shopgo_zoom_controls ."});";
+        break;
+    case "lens":
+        echo "jQuery('.sxzoom').swinxyzoom({mode:'lens', size: '".$Shopgo_zoom_size."%',  controls: ". $Shopgo_zoom_controls ."});";
+        break;
+}
+
+?>
+</script>
+

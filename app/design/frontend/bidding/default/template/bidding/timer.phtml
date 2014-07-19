@@ -1,0 +1,89 @@
+<div id="timerContainer" style="display:none"></div>
+
+<script type="text/javascript">
+a = Date.now();
+b = Date.now() +9.072e+8//plus week o ns
+
+
+Timer = {
+	init:function(start,end,objectId){
+		stringObject = {};
+		var startDate = new Date(start);
+		var endDate = new Date(end);
+		var DateElements = Timer.getDateElements(startDate,endDate);
+		var difference = Math.abs(a - b); // milli 
+		for (var i = DateElements.length - 1; i >= 0; i--) {
+			Timer['getDifference'+DateElements[i]](difference);
+		};
+		Timer.drawTimer(stringObject,objectId);
+
+	},
+	getDateElements:function(startDate,endDate){
+		var timeDiff = endDate - startDate; 
+		var elements = [];
+		if(timeDiff/3600000/24/7>1){
+			elements.push('Weeks');
+		}
+		if(timeDiff/3600000/24>1){
+			elements.push('Days');
+		}
+		elements.push('OnlyTime');
+
+		return elements;
+	},
+	getDifferenceDays:function(timeDiff){
+		timeDiff1 = timeDiff/3600000/24;//Days
+		var timeDiffW = parseInt(timeDiff/3600000/24/7);
+		timeDiffWeeks = timeDiff1-((timeDiff1/3600000/24)/7*timeDiffW);//Weeks
+		remainingDays = timeDiffWeeks % parseInt(timeDiffWeeks) ;
+		stringObject['Days'] = parseInt(timeDiffWeeks - (timeDiffW*7));
+		return ;
+	},
+	getDifferenceWeeks:function(timeDiff){
+		var timeDiff = timeDiff/3600000/24/7;
+		stringObject['Weeks'] = parseInt(timeDiff);
+		return;
+	},
+	getDifferenceOnlyTime:function(difference){
+		var timeDiff = difference / 3600000 /24 ; // Days
+		var remainingDays = timeDiff % parseInt(timeDiff);//remaing days in decimals !!
+		if(!remainingDays){
+			stringObject['Hours'] = 00;
+			stringObject['Minutes'] = 00;
+			stringObject['Seconds'] = 00;
+		}else{
+			stringObject['Hours'] = parseInt(remainingDays * 24);
+			var hours = remainingDays * 24;
+			var minutes = (hours % parseInt(hours))* 60;
+			if(hours % parseInt(hours)){
+				stringObject['Minutes'] = parseInt((hours % parseInt(hours))* 60);
+			}
+			else{
+				stringObject['Minutes'] = stringObject['Hours'] * 60;
+			}
+
+			if(minutes % parseInt(minutes)){
+				stringObject['Seconds'] = Math.floor((minutes % parseInt(minutes)) * 60);
+			}
+			else{
+				stringObject['Seconds'] = stringObject['Minutes'] * 60;
+			}
+		}
+		return;
+	},
+	drawTimer:function(timeObject,timerContainer ){
+		var Time = timeObject.Weeks + ' Weeks ' + timeObject.Days + ' Days ' + timeObject.Hours +':'+timeObject.Minutes+':'+timeObject.Seconds;
+		document.getElementById(timerContainer).innerHTML = Time;
+
+	}
+
+
+}
+setInterval(function(){
+	b = b- 1000;
+	Timer.init(a,b,"timerContainer");
+
+},1000)
+
+</script>
+

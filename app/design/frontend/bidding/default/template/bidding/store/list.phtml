@@ -5,7 +5,7 @@ if ($_products->count()):
 <script type="text/javascript">
 <!--
 window.onload = function () {
-	window.socket = io.connect('http://127.0.0.1:3700');
+	window.socket = io.connect('www.auctionsvip.com:3700');
 	socket.on('message', function (data) {
 		jQuery("#price-box-" + data.PI).html(data.price);
 		jQuery("#price-box-" + data.PI).parent().parent().addClass('highlight').delay(500).queue(
@@ -42,7 +42,10 @@ $customerSession = $this->getCustomerSession();?>
 			href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
 			class="product-image">
 				<div class="clickPrice">
-				<?php echo (int)$_product->getOpeningPrice() . '$'; ?>
+								<?php 	
+				$array_cpc = explode('.', $_product->getCpc());
+				echo (int)substr($array_cpc[1],0,2) . '&cent;'; 
+				?>
 				</div> <img src="<?php echo $_product->getImageUrl() ?>" /> </a>
 			<h1 class="product-name">
 				<a

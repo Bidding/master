@@ -2,8 +2,8 @@
 <layout version="0.1.0">
 	<customer_account>
 		<reference name="customer_account_navigation">
-			<action method="addLink" module="store"><name>winner_dashboard</name><path>store/index/winner/</path><lable>Winner List</lable></action>
-			<action method="addLink" module="store"><name>bidding_history</name><path>store/bidding/</path><lable>Bidding History</lable></action>
+			<action method="addLink" module="store" translate="label"><name>winner_dashboard</name><path>store/index/winner/</path><lable>Winner List</lable></action>
+			<action method="addLink" module="store" translate="label"><name>bidding_history</name><path>store/bidding/</path><lable>Bidding History</lable></action>
 		</reference>
 	</customer_account>
 	<store_index_index>
@@ -32,13 +32,26 @@
         </reference>
 		<reference name="content">
             <block type="store/product_view" name="product.info" template="bidding/store/view.phtml">
-                <block type="catalog/product_view_media" name="product.info.media" as="media" template="bidding/store/view/media.phtml"/>
+                <block type="catalog/product_view_media" name="product.info.media" as="media" template="shopgo/zoom/media.phtml"/>
                 <action method="unsetCallChild"><child>container1</child><call>ifEquals</call><if>0</if><key>alias_in_layout</key><key>options_container</key></action>
                 <action method="unsetCallChild"><child>container2</child><call>ifEquals</call><if>0</if><key>alias_in_layout</key><key>options_container</key></action>
                         	<block type="store/product_listofbidders" name="bidders.list" as="bidders.list" template="bidding/store/view/bidders-list.phtml" />
+                        	<block type="core/template" name="Timer" as="Timer" template="bidding/timer.phtml" />
+
 
             </block>
+        </reference><!-- Zoom -->
+            <reference name="head">
+        
+            <action method="addCss" ifconfig="shopgo_zoom/general/enabled"><script>shopgo/zoom/css/jquery.swinxy-combined.css</script></action>        
+    	    <action method="addJs" ifconfig="shopgo_zoom/general/enabled"><script>shopgo/zoom/jquery.swinxy-combined.min.js</script></action>
+            <action method="addJs" ifconfig="shopgo_zoom/general/mouseweel"><script>shopgo/zoom/jquery.mousewheel.js</script></action>
+
+     
         </reference>
+        <reference name="product.info.media">
+           <action method="setTemplate" ifconfig="shopgo_zoom/general/enabled"><template>shopgo/zoom/media.phtml</template></action>
+        </reference>   <!-- End of Zoom -->
 
 	</store_product_view>
 	<store_index_winner>

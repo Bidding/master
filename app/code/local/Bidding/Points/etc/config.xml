@@ -23,12 +23,16 @@
 			</updates>
 		</layout>
 	<events>
-			<sales_order_place_after>
+			<gate2play_order_success>
 				<observers>
 					<points_order_observer>
 						<type>singleton</type>
 						<class>Bidding_Points_Model_Observer</class>
-						<method>setPoints</method></points_order_observer></observers></sales_order_place_after></events></frontend>
+						<method>setPoints</method></points_order_observer>
+				</observers>
+			</gate2play_order_success>
+	</events>
+	</frontend>
 	<global>
 		<blocks>
 			<points>

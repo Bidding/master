@@ -91,11 +91,12 @@
 
     <?php $_collectionSize = $_productCollection->count() ?>
     <?php $_columnCount = $this->getColumnCount(); ?>
+            <ul class="products-grid row">
+
     <?php $i=0; foreach ($_productCollection as $_product): 
         $_pro = Mage::getModel('catalog/product')->load($_product->getId());
     ?>
         <?php if ($i++%$_columnCount==0): ?>
-        <ul class="products-grid row">
         <?php endif ?>
             <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?> span3">
                 <a href="javascript:void(0)" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image') ?>"  alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
@@ -116,9 +117,10 @@
                 </div>
             </li>
         <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
-        </ul>
         <?php endif ?>
         <?php endforeach ?>
+                </ul>
+
         <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
     <?php endif; ?>
 

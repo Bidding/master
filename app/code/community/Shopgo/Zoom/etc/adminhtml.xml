@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <shopgo module="zoom">
+            <title>ShopGo</title>
+            <sort_order>71</sort_order>
+            <children>
+                <zoom module="zoom">
+                    <title>ShopGo Zoom</title>
+                    <sort_order>99</sort_order>
+                    <action>adminhtml/system_config/edit/section/shopgo_zoom</action>
+                </zoom>
+            </children>
+        </shopgo>
+    </menu>
+	<acl>
+	    <resources>
+	        <all>
+	            <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <shopgo_zoom>
+                                        <title>Zoom</title>
+                                    </shopgo_zoom>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
