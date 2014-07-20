@@ -52,7 +52,8 @@
 					<?php 
 		//if($customerSession->isLoggedIn()):?>
 		<div>
-			<span id="countdown-product"></span>
+			<!-- <span id="countdown-product"></span> -->
+			<?php echo $this->getChildHtml('Timer');?>
 		</div>
 
 		<?php //endif;?>
@@ -220,4 +221,3 @@ jQuery("#countdown-product").countdown("<?php echo $_productDate ?>")
 });
 </script>
 
-<?php echo $this->getChildHtml('Timer');?>

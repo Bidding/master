@@ -60,7 +60,8 @@ $customerSession = $this->getCustomerSession();?>
 				<?php
 				//if($customerSession->isLoggedIn()):?>
 					<div>
-						<span id="clock<?php echo $i; ?>"></span>
+						<!-- <span id="clock<?php echo $i; ?>"></span> -->
+						<span id="timerContainer-<?php echo $_product->getId();?>"></span>
 					</div>
 
 					<?php //endif;?>
@@ -193,20 +194,24 @@ jQuery("#formbid<?php echo $_product->getId() ?>").submit(function(event) {
 		</li>
 
 <script>
-jQuery("#clock" + <?php echo $i; ?>).countdown("<?php echo $_productDate ?>")
-.on('update.countdown', function(event){
-	var format = '%H:%M:%S';
-	if (event.offset.days > 0){
-		format = '%-d day%!d ' + format;
-	}
-	if (event.offset.weeks > 0){
-		format = '%-w week%!w ' + format;
-	}
-	jQuery("#clock" + <?php echo $i; ?>).html(event.strftime(format));
-})
-.on('finish.countdown', function(event) {
-	location.reload();
-});
+// jQuery("#clock" + <?php echo $i; ?>).countdown("<?php echo $_productDate ?>")
+// .on('update.countdown', function(event){
+// 	var format = '%H:%M:%S';
+// 	if (event.offset.days > 0){
+// 		format = '%-d day%!d ' + format;
+// 	}
+// 	if (event.offset.weeks > 0){
+// 		format = '%-w week%!w ' + format;
+// 	}
+// 	jQuery("#clock" + <?php echo $i; ?>).html(event.strftime(format));
+// })
+// .on('finish.countdown', function(event) {
+// 	location.reload();
+// });
+setInterval(function(){
+	b = b- 1000;
+	Timer.init(a,b,"timerContainer-<?php echo $_product->getId();?>");
+},1000)
 </script> 
 		<?php
 $i++;
@@ -223,3 +228,112 @@ else :
 <?php
 endif;
 ?>
+
+
+<script type="text/javascript">
+a = Date.now();
+b = Date.now() +8.28e+7//plus week o ns
+
+
+Timer = {
+	init:function(start,end,objectId){
+		stringObject = {};
+		var startDate = new Date(start);
+		var endDate = new Date(end);
+		var DateElements = Timer.getDateElements(startDate,endDate);
+		var difference = Math.abs(a - b); // milli 
+		for (var i = DateElements.length - 1; i >= 0; i--) {
+			Timer['getDifference'+DateElements[i]](difference);
+		};
+		Timer.drawTimer(stringObject,objectId);
+
+	},
+	getDateElements:function(startDate,endDate){
+		var timeDiff = endDate - startDate; 
+		var elements = [];
+		if(timeDiff/3600000/24/7>1){
+			elements.push('Weeks');
+		}
+		if(timeDiff/3600000/24>1){
+			elements.push('Days');
+		}
+		elements.push('OnlyTime');
+
+		return elements;
+	},
+	getDifferenceDays:function(timeDiff){
+		timeDiff1 = timeDiff/3600000/24;//Days
+		var timeDiffW = parseInt(timeDiff/3600000/24/7);
+		timeDiffWeeks = timeDiff1-((timeDiff1/3600000/24)/7*timeDiffW);//Weeks
+		remainingDays = timeDiffWeeks % parseInt(timeDiffWeeks) ;
+		stringObject['Days'] = parseInt(timeDiffWeeks - (timeDiffW*7));
+		return ;
+	},
+	getDifferenceWeeks:function(timeDiff){
+		var timeDiff = timeDiff/3600000/24/7;
+		stringObject['Weeks'] = parseInt(timeDiff);
+		return;
+	},
+	getDifferenceOnlyTime:function(difference){
+		var timeDiff = difference / 3600000 /24 ; // Days
+		if(!(timeDiff<1)){
+			var remainingDays = timeDiff % parseInt(timeDiff);//remaing days in decimals !!
+		}
+		else{
+			var remainingDays = timeDiff ;
+		}
+		if(!remainingDays){
+			stringObject['Hours'] = 00;
+			stringObject['Minutes'] = 00;
+			stringObject['Seconds'] = 00;
+		}else{
+			var hours = remainingDays * 24;
+			if(hours % parseInt(hours)){
+				var remainingMinMil = hours % parseInt(hours);
+				stringObject["Hours"] = parseInt(hours);
+			}else{
+				var remainingMinMil = hours;
+				var hours = 0;
+				stringObject["Hours"] = parseInt(hours);
+			}
+			var minutes = remainingMinMil * 60;
+			if(minutes % parseInt(minutes)){
+				var remainingSecMil = minutes % parseInt(minutes);
+				stringObject["Minutes"] = parseInt(minutes);
+			}else{
+				var remainingSecMil = minutes;
+				var minutes = 0;
+				stringObject["Minutes"] = parseInt(minutes);
+			}
+			var seconds = remainingSecMil * 60;
+			if(seconds > 60){
+				seconds = 60;
+			}
+			if(seconds){
+				var seconds = Math.round(seconds);
+				stringObject["Seconds"] = Math.round(seconds);
+			}else{
+				var seconds = 0;
+				stringObject["Seconds"] = Math.round(seconds);
+			}
+		}
+		return;
+	},
+	drawTimer:function(timeObject,timerContainer ){
+		var Time = ""
+		if(timeObject.Weeks){
+			Time +=timeObject.Weeks + ' Weeks ' ;
+		}
+		if(timeObject.Days){
+			Time +=timeObject.Days + ' Days ' ;
+		}
+
+		Time += timeObject.Hours +':'+timeObject.Minutes+':'+timeObject.Seconds;
+		document.getElementById(timerContainer).innerHTML = Time;
+
+	}
+
+
+}
+</script>
+

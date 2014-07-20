@@ -1,8 +1,8 @@
-<div id="timerContainer" style="display:none"></div>
+<span id="timerContainer"></span>
 
 <script type="text/javascript">
 a = Date.now();
-b = Date.now() +9.072e+8//plus week o ns
+b = 1405933713444;//plus week o ns
 
 
 Timer = {
@@ -46,33 +46,59 @@ Timer = {
 	},
 	getDifferenceOnlyTime:function(difference){
 		var timeDiff = difference / 3600000 /24 ; // Days
-		var remainingDays = timeDiff % parseInt(timeDiff);//remaing days in decimals !!
+		if(!(timeDiff<1)){
+			var remainingDays = timeDiff % parseInt(timeDiff);//remaing days in decimals !!
+		}
+		else{
+			var remainingDays = timeDiff ;
+		}
 		if(!remainingDays){
 			stringObject['Hours'] = 00;
 			stringObject['Minutes'] = 00;
 			stringObject['Seconds'] = 00;
 		}else{
-			stringObject['Hours'] = parseInt(remainingDays * 24);
 			var hours = remainingDays * 24;
-			var minutes = (hours % parseInt(hours))* 60;
 			if(hours % parseInt(hours)){
-				stringObject['Minutes'] = parseInt((hours % parseInt(hours))* 60);
+				var remainingMinMil = hours % parseInt(hours);
+				stringObject["Hours"] = parseInt(hours);
+			}else{
+				var remainingMinMil = hours;
+				var hours = 0;
+				stringObject["Hours"] = parseInt(hours);
 			}
-			else{
-				stringObject['Minutes'] = stringObject['Hours'] * 60;
-			}
-
+			var minutes = remainingMinMil * 60;
 			if(minutes % parseInt(minutes)){
-				stringObject['Seconds'] = Math.floor((minutes % parseInt(minutes)) * 60);
+				var remainingSecMil = minutes % parseInt(minutes);
+				stringObject["Minutes"] = parseInt(minutes);
+			}else{
+				var remainingSecMil = minutes;
+				var minutes = 0;
+				stringObject["Minutes"] = parseInt(minutes);
 			}
-			else{
-				stringObject['Seconds'] = stringObject['Minutes'] * 60;
+			var seconds = remainingSecMil * 60;
+			if(seconds > 60){
+				seconds = 60;
+			}
+			if(seconds){
+				var seconds = Math.round(seconds);
+				stringObject["Seconds"] = Math.round(seconds);
+			}else{
+				var seconds = 0;
+				stringObject["Seconds"] = Math.round(seconds);
 			}
 		}
 		return;
 	},
 	drawTimer:function(timeObject,timerContainer ){
-		var Time = timeObject.Weeks + ' Weeks ' + timeObject.Days + ' Days ' + timeObject.Hours +':'+timeObject.Minutes+':'+timeObject.Seconds;
+		var Time = ""
+		if(timeObject.Weeks){
+			Time +=timeObject.Weeks + ' Weeks ' ;
+		}
+		if(timeObject.Days){
+			Time +=timeObject.Days + ' Days ' ;
+		}
+
+		Time += timeObject.Hours +':'+timeObject.Minutes+':'+timeObject.Seconds;
 		document.getElementById(timerContainer).innerHTML = Time;
 
 	}
@@ -82,7 +108,6 @@ Timer = {
 setInterval(function(){
 	b = b- 1000;
 	Timer.init(a,b,"timerContainer");
-
 },1000)
 
 </script>

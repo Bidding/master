@@ -14,7 +14,9 @@
 			<action method="setTemplate"><template>page/1column.phtml</template></action>
 		</reference>
 		<reference name="content">
-			<block type="store/product" name="bidding.store" template="bidding/store/list.phtml" />
+			<block type="store/product" name="bidding.store" template="bidding/store/list.phtml" >
+                <block type="core/template" name="TimerL" as="TimerL" template="bidding/timer.phtml" />
+            </block>
 		</reference>
 	</store_index_index>
 	<store_product_view>
