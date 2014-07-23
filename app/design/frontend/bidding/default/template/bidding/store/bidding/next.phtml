@@ -1,0 +1,29 @@
+<p><?php echo $this->__('Home')?> / <?php echo $this->__('Next Bidding')?></p>
+<?php
+$products = $this->getNextBidding();
+?>
+<div class="closed-div">
+<?php
+foreach ($products as $product)
+{
+$bidder = $this->getCurrentBidder($product->getId());
+$winner_name = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
+?>
+	<div class="closed-product product-<?php echo $product->getId() ?>">
+		<div class="images">
+					<div class="clickPrice">
+			<?php 	
+				$array_cpc = explode('.', $product->getCpc());
+				echo (int)substr($array_cpc[1],0,2) . '&cent;'; 
+			?>
+			<?php //echo (int)$_product->getOpeningPrice() . '$'; ?></div>
+			<img src="<?php echo $product->getImageUrl(); ?>" />
+			<div class="closed-price">
+				<p><?php echo $this->__('opeing price') ?> <?php echo Mage::helper('core')->currency($product->getOpeningPrice()) ?></p>
+			</div>
+		</div>
+	</div>
+<?php
+}
+?>
+</div>

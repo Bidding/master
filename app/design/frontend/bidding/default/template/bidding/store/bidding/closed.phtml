@@ -1,0 +1,26 @@
+<p><?php echo $this->__('Home')?> / <?php echo $this->__('Closed Bidding')?></p>
+<?php
+$products = $this->getClosedBidding();
+?>
+<div class="closed-div">
+<?php
+foreach ($products as $product)
+{
+$bidder = $this->getCurrentBidder($product->getId());
+$winner_name = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
+?>
+	<div class="closed-product product-<?php echo $product->getId() ?>">
+		<div class="images">
+			<img src="<?php echo $product->getImageUrl(); ?>" />
+			<div class="closed-price">
+				<p><?php echo $this->__('Closed price is') ?> <?php echo Mage::helper('core')->currency($product->getCurrentPrice()) ?></p>
+			</div>
+			<div class="closed-winner">
+				<p><?php echo $this->__('Winner:') ?> <?php echo $winner_name; ?></p>
+			</div>
+		</div>
+	</div>
+<?php
+}
+?>
+</div>

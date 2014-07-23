@@ -17,7 +17,7 @@ if ($_products->count()):
 		<li class="item">
 <h3 class="closePrice"><?php echo $this->__('Sold')?> <?php echo Mage::helper('core')->currency($_product->getPrice()); ?></h3>
 			<a
-			href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
+			href="<?php echo $this->getUrl('bidding/closed') ?>"
 			class="product-image"> <img
 			src="<?php echo $_product->getImageUrl() ?>" />
 			<div class="state closed"></div>

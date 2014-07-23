@@ -74,4 +74,20 @@
 			<block type="store/bidding_preview" name="bidding.history" template="bidding/store/bidding/preview.phtml" />
 		</reference>
 	</store_bidding_preview>
+	<store_closed_index>
+		<reference name="root">
+			<action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+		<reference name="content">
+			<block type="store/bidding_closed" name="closed.bidding" template="bidding/store/bidding/closed.phtml" />
+		</reference>
+	</store_closed_index>
+	<store_next_index>
+		<reference name="root">
+			<action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+		<reference name="content">
+			<block type="store/bidding_next" name="closed.bidding" template="bidding/store/bidding/next.phtml" />
+		</reference>
+	</store_next_index>
 </layout>
