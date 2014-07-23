@@ -36,6 +36,7 @@ class Bidding_Store_Block_Product extends Mage_Core_Block_Template
 	{
 		$currentTimestamp = Mage::getModel('core/date')->timestamp(time());
 		$date = date('Y-m-d H:i:s', $currentTimestamp);
+		
 		$products = Mage::getModel('catalog/product')->getCollection()
 					->addAttributeToSelect('*')
 					->addAttributeToFilter('can_bid', array('eq' => 1))

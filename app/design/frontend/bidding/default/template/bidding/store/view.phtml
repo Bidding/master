@@ -33,7 +33,6 @@
 ?>
 <?php $_helper = $this->helper('catalog/output'); ?>
 <?php $_product = $this->getProduct(); ?>
-
 <div id="messages_product_view">
 	<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 </div>
@@ -52,8 +51,8 @@
 					<?php 
 		//if($customerSession->isLoggedIn()):?>
 		<div>
-			<!-- <span id="countdown-product"></span> -->
-			<?php echo $this->getChildHtml('Timer');?>
+			
+			<span id="timerContainer-<?php echo $_product->getId();?>"></span>
 		</div>
 
 		<?php //endif;?>
@@ -203,21 +202,126 @@ jQuery("#formbid<?php echo $_product->getId() ?>").submit(function(event) {
 	echo $_product->getDescription(); 
 </div>*/?>
 </div>
-<?php $_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate())); ?>
+<?php 
+$start_date = microtime(true) * 1000 ;
+$end_date = strtotime($_product->getEndBiddingDate()) * 1000; 
+?>
 <script>
-jQuery("#countdown-product").countdown("<?php echo $_productDate ?>")
-.on('update.countdown', function(event){
-	var format = '%H:%M:%S';
-	if (event.offset.days > 0){
-		format = '%-d day%!d ' + format;
+start_<?php echo $_product->getId();?> = <?php echo $start_date; ?>;
+end_<?php echo $_product->getId();?> = <?php echo $end_date; ?>;//plus week o ns
+setInterval(function(){
+	end_<?php echo $_product->getId();?>  = end_<?php echo $_product->getId();?> - 1000;
+	Timer.init(start_<?php echo $_product->getId();?>,end_<?php echo $_product->getId();?> ,"timerContainer-<?php echo $_product->getId();?>",function(){
+		window.location = "<?php echo $this->getUrl() ?>";
+		document.getElementById("view-bid-button").remove();
+		document.getElementById("timerContainer-<?php echo $_product->getId() ?>").remove();
+
+	});
+},1000)
+
+Timer = {
+	init:function(start,end,objectId,timerFinish){
+		if(end<=start){
+			timerFinish.call();
+		}
+		stringObject = {};
+		var startDate = new Date(start);
+		var endDate = new Date(end);
+		var DateElements = Timer.getDateElements(startDate,endDate);
+		var difference = Math.abs(startDate - endDate); // milli 
+		for (var i = DateElements.length - 1; i >= 0; i--) {
+			Timer['getDifference'+DateElements[i]](difference);
+		};
+		Timer.drawTimer(stringObject,objectId);
+	},
+	getDateElements:function(startDate,endDate){
+		var timeDiff = endDate - startDate; 
+		var elements = [];
+		if(timeDiff/3600000/24/7>1){
+			elements.push('Weeks');
+		}
+		if(timeDiff/3600000/24>1){
+			elements.push('Days');
+		}
+		elements.push('OnlyTime');
+
+		return elements;
+	},
+	getDifferenceDays:function(timeDiff){
+		timeDiff1 = timeDiff/3600000/24;//Days
+		var timeDiffW = parseInt(timeDiff/3600000/24/7);
+		timeDiffWeeks = timeDiff1-((timeDiff1/3600000/24)/7*timeDiffW);//Weeks
+		remainingDays = timeDiffWeeks % parseInt(timeDiffWeeks) ;
+		stringObject['Days'] = parseInt(timeDiffWeeks - (timeDiffW*7));
+		return ;
+	},
+	getDifferenceWeeks:function(timeDiff){
+		var timeDiff = timeDiff/3600000/24/7;
+		stringObject['Weeks'] = parseInt(timeDiff);
+		return;
+	},
+	getDifferenceOnlyTime:function(difference){
+		var timeDiff = difference / 3600000 /24 ; // Days
+		if(!(timeDiff<1)){
+			var remainingDays = timeDiff % parseInt(timeDiff);//remaing days in decimals !!
+		}
+		else{
+			var remainingDays = timeDiff ;
+		}
+		if(!remainingDays){
+			stringObject['Hours'] = 00;
+			stringObject['Minutes'] = 00;
+			stringObject['Seconds'] = 00;
+		}else{
+			var hours = remainingDays * 24;
+			if(hours % parseInt(hours)){
+				var remainingMinMil = hours % parseInt(hours);
+				stringObject["Hours"] = parseInt(hours);
+			}else{
+				var remainingMinMil = hours;
+				var hours = 0;
+				stringObject["Hours"] = parseInt(hours);
+			}
+			var minutes = remainingMinMil * 60;
+			if(minutes % parseInt(minutes)){
+				var remainingSecMil = minutes % parseInt(minutes);
+				stringObject["Minutes"] = parseInt(minutes);
+			}else{
+				var remainingSecMil = minutes;
+				var minutes = 0;
+				stringObject["Minutes"] = parseInt(minutes);
+			}
+			var seconds = remainingSecMil * 60;
+			if(seconds > 60){
+				seconds = 60;
+			}
+			if(seconds){
+				var seconds = Math.round(seconds);
+				stringObject["Seconds"] = Math.round(seconds);
+			}else{
+				var seconds = 0;
+				stringObject["Seconds"] = Math.round(seconds);
+			}
+		}
+		return;
+	},
+	drawTimer:function(timeObject,timerContainer ){
+		var Time = ""
+		if(timeObject.Weeks){
+			Time +=timeObject.Weeks + ' Weeks ' ;
+		}
+		if(timeObject.Days){
+			Time +=timeObject.Days + ' Days ' ;
+		}
+
+		Time += timeObject.Hours +':'+timeObject.Minutes+':'+timeObject.Seconds;
+		document.getElementById(timerContainer).innerHTML = Time;
+
 	}
-	if (event.offset.weeks > 0){
-		format = '%-w week%!w ' + format;
-	}
-	jQuery("#countdown-product").html(event.strftime(format));
-})
-.on('finish.countdown', function(event) {
-	location.reload();
-});
+
+
+}
+
+
 </script>
 
