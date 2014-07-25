@@ -37,7 +37,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 		{
 			$data = $this->getRequest()->getParams();
 			$request = $this->getRequest()->isPost();
-				
+
 			//Check Form Key for security issue
 			if ($request && $data['form_key'] == Mage::getSingleton('core/session')->getFormKey())
 			{
@@ -47,7 +47,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 				if ($points->getBalance() != 0)
 				{
 					$_product = Mage::getModel('catalog/product')->load($data['productId']);
-						
+
 					//Check if customer can big before time finish with X time
 					if (!$this->getTotalBid($customerSession->getCustomerId(), $data['productId']) && $this->getDiffTime($_product->getEndBiddingDate()))
 					{
@@ -60,7 +60,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 					{
 						$_product = Mage::getModel('catalog/product')->load($data['productId']);
 						$newPrice = $_product->getCurrentPrice() + $_product->getCpc();
-						if ($newPrice >= $_product->getPrice())
+						if ($newPrice > $_product->getPrice())
 						{
 							$_product->setEndBiddingDate(date('Y-m-d H:i:s',strtotime("-1 days")));
 							$_product->save();
@@ -68,28 +68,30 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 							$session->addError($this->__("This product has been closed"));
 							$data = array_merge($data, array('reload' => 'true'));
 						}
-
-						$bid_result = $this->setCustomerBid($customerSession->getCustomerId(), $data['productId'], $customerSession->getCustomer()->getName());
-
-						//Check if customer spend X points or more to win product
-						if ($this->getDiffTime($_product->getEndBiddingDate()) && ($this->getTotalBid($customerSession->getCustomerId(), $data['productId']) < 5))
+						else
 						{
-							$session = Mage::getModel('core/session');
-							$session->addError($this->__("You should spend 5 points or more to win this bid"));
-							$data = array_merge($data, array('reload' => 'true'));
+							$bid_result = $this->setCustomerBid($customerSession->getCustomerId(), $data['productId'], $customerSession->getCustomer()->getName());
+
+							//Check if customer spend X points or more to win product
+							if ($this->getDiffTime($_product->getEndBiddingDate()) && ($this->getTotalBid($customerSession->getCustomerId(), $data['productId']) < 5))
+							{
+								$session = Mage::getModel('core/session');
+								$session->addError($this->__("You should spend 5 points or more to win this bid"));
+								$data = array_merge($data, array('reload' => 'true'));
+							}
+
+							//Check if points will end soon
+							if ($points->getBalance() <= 10)
+							{
+								$session = Mage::getModel('core/session');
+								$session->addError($this->__("Your credit will end soon"));
+								$data = array_merge($data, array('reload' => 'true'));
+							}
+
+							$data = array_merge($data , $bid_result);
 						}
-
-						//Check if points will end soon
-						if ($points->getBalance() <= 10)
-						{
-							$session = Mage::getModel('core/session');
-							$session->addError($this->__("Your credit will end soon"));
-							$data = array_merge($data, array('reload' => 'true'));
-						}
-
-						$data = array_merge($data , $bid_result);
-
 						echo json_encode($data);
+							
 
 					}
 				}
