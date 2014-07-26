@@ -46,8 +46,7 @@
                 ?>
             <div class="loginOr">
                 <div class="con-login">                   
-                <a class="a-lag" href="#">العربية</a>
-            <?php //echo $this->getChildHtml('store_language') ?> 
+            <?php echo $this->getChildHtml('store_language') ?> 
                 
                 <a href="<?php echo $this->getUrl('customer/account/login') ?>"><?php echo $this->__('Login')?></a>
                 <span class="or"><?php echo $this->__('Or')?></span>
@@ -61,7 +60,7 @@
         <?php else:?>
         <div class="loginOr">
 	        <div class="con-login">
-	         <a class="a-lag" href="javascript:alert('قريبا')">العربية</a>
+            <?php echo $this->getChildHtml('store_language') ?> |
                         <a href="<?php echo $this->getUrl('customer/account/') ?>"><?php echo $this->__('My Account')?></a>
             <a href="<?php echo  $this->getUrl('customer/account/logout') ?>"><?php echo $this->__('Log out')?></a>
             </div>
