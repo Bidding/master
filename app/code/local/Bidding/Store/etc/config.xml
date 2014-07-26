@@ -5,6 +5,26 @@
 			<version>1.0.0</version>
 		</Bidding_Store>
 	</modules>
+	<admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<bidding_store before="Mage_Adminhtml">Bidding_Store_Adminhtml</bidding_store>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
+	<adminhtml>
+        <layout>
+            <updates>
+                <store>
+                    <file>bidding.xml</file>
+                </store>
+            </updates>
+        </layout>
+    </adminhtml>
 	<frontend>
 		<routers>
 			<store>
@@ -43,6 +63,11 @@
 				<class>Bidding_Store_Model</class>
 			</store>
 		</models>
+		<helpers>
+			<store>
+                <class>Bidding_Store_Helper</class>
+            </store>
+		</helpers>
 	</global>
 	<crontab>
 		<jobs>

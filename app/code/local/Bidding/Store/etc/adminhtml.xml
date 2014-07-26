@@ -1,0 +1,30 @@
+<config>
+	<menu>
+		   <report>
+            <children>
+                <store module="store">
+                    <title>Bidding Winner</title>
+                    <action>adminhtml/store</action>
+                </store>
+            </children>
+        </report>
+	</menu>
+           <acl>
+            <resources>
+                <all>
+                    <title>Bidding Winner</title>
+                </all>
+                <admin>
+                    <children>
+								<report>
+									<children>
+										<store>
+											<title>Bidding Winner</title>
+										</store>
+									</children>
+								</report>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+</config>

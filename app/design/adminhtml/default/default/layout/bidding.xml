@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.1.0">
+    <adminhtml_store_index>
+        <reference name="content">
+            <block type="store/adminhtml_store" name="store" as="store" />
+        </reference>
+    </adminhtml_store_index>
+</layout>

@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <Bidding_CardOnly>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Bidding_CardOnly>
+    </modules>
+</config>

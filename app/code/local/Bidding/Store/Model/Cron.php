@@ -7,6 +7,7 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 		$date = date('Y-m-d H:i:s');
 		$products = Mage::getModel('catalog/product')->getCollection()
 		->addAttributeToSelect('name')
+		->addAttributeToSelect('sku')
 		->addFieldToFilter('end_bidding_date', array('lt' => $date));
 		foreach ($products as $product)
 		{
@@ -22,19 +23,24 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 					$winner_bidder = $winner_bidder->getData();
 					if ($this->getTotalBid($winner_bidder[0]['customer_id'], $product->getId()) >= 5)
 					{
+						$customer = Mage::getModel('customer/customer')->load($winner_bidder[0]['customer_id']);
+
 						$winner = Mage::getModel('points/winner');
 						$winner->setCustomerId($winner_bidder[0]['customer_id']);
 						$winner->setProductId($product->getId());
+						$winner->setCustomerName($customer->getName());
+						$winner->setProductSku($product->getSku());
+						$winner->setProductName($product->getName());
 						$winner->setWinDate(date('Y-m-d H:i:s'));
 						$winner->setBought(0);
 						$winner->save();
-						$customer = Mage::getModel('customer/customer')->load($winner_bidder[0]['customer_id']);
+
 						$this->_sendEmail($customer->getEmail() , $customer->getName(), $product->getName());
 						echo $customer->getEmail() . ' Win: ' . $product->getName();
 						echo '<br />';
 					}
 				}
-				else 
+				else
 				{
 					echo 'Not Win: ' . $product->getName();
 					echo '<br />';
