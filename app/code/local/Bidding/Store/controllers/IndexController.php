@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('Asia/Amman');
+//date_default_timezone_set('Asia/Amman');
 class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 {
 	protected function _getCustomerSession()

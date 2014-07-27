@@ -20,8 +20,8 @@
 			<table class="data-table" id="my-orders-table">
 				<thead>
 					<tr class="first last">
-						<th><?php echo $this->__('Price')?>
-						</th>
+					<!-- <th><?php echo $this->__('Price')?>
+						</th>-->
 						<th><?php echo $this->__('New Price')?>
 						</th>
 						<th><?php echo $this->__('Date')?>
@@ -33,7 +33,7 @@
 				foreach ($collection as $_product):
 				?>
 					<tr>
-						<td><?php echo Mage::helper('core')->currency($_product->getPrice())?></td>
+						<!-- <td><?php echo Mage::helper('core')->currency($_product->getPrice())?></td> -->
 						<td><?php echo Mage::helper('core')->currency($_product->getNewPrice())?></td>
 						<td><?php echo $_product->getBidDate() ?></td>
 					</tr>
