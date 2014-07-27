@@ -36,7 +36,7 @@ $products = $this->getWinProducts();
 						<td style="text-align: center"><?php
 						if(!$product->getBought())
 						{
-							?> <?php $buttonTitle = $this->__('Add to Cart'); ?> <?php if($_product->isSaleable()): ?>
+							?> <?php $buttonTitle = $this->__('Buy Now'); ?> <?php if($_product->isSaleable()): ?>
 							<div class="add-to-cart">
 								<form action="<?php echo $this->getSubmitUrl($_product) ?>"
 									method="post" id="product_addtocart_form_<?php echo $_product->getId() ?>"
