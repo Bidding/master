@@ -277,6 +277,7 @@ class Mage_Checkout_Model_Cart extends Varien_Object implements Mage_Checkout_Mo
                         array('_query' => array('startcustomization' => 1))
                     )
                     : $product->getProductUrl();
+                    $redirectUrl = Mage::getUrl('checkout/cart');
                 $this->getCheckoutSession()->setRedirectUrl($redirectUrl);
                 if ($this->getCheckoutSession()->getUseNotice() === null) {
                     $this->getCheckoutSession()->setUseNotice(true);

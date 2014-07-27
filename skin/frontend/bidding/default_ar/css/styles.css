@@ -2016,3 +2016,35 @@ form.cnpForm select{
     font-weight: 600;
     font-size: 18px;
 }
+.closed-product {
+width: 295px;
+float: right;
+margin-left: 15px;
+display: block;
+position: relative;
+}
+.closed-price, .closed-winner {
+background-color: #231f20;
+text-align: center;
+}
+.closed-price p {
+font-weight: bold;
+color: #fff200;
+margin: 0 0 2px;
+}
+.closed-winner p {
+	font-weight: bold;
+	color: #bcbec0;	
+}
+.images img {
+width: 295px;
+}
+.closed-price .price {
+color: #fff200 !important;	
+}
+.closed-div {
+	margin-top: 60px;
+	}
+	.closed-header {
+	text-align: right;
+	}

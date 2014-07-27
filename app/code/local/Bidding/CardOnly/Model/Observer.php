@@ -24,26 +24,22 @@ class Bidding_CardOnly_Model_Observer
 
 	public function logCartAdd($observer)
 	{
-		//$product = $observer->getEvent()->getProduct();
-		//$_product = Mage::getModel('catalog/product')->load($product->getId());
-		//$params['qty'] = 1;
-		//print_r($event->getName());die;
-		//$item = $event->getQuoteItem();
-		//$product = $item->getProduct();
-		//$quote = $item->getQuote();
-
-
 		/*
-		 $params['qty'] = 1;
-		 $quoteItem = $observer->getEvent()->getQuoteItem();
-		 $quote_item_id = $quoteItem->getItemId();
-		 $product = Mage::getModel('catalog/product')->load($quote_item_id);
-		 //$product = $this->_initProduct($_product); // here initialize the product
-		 */
-		//$cart = Mage::getModel('checkout/cart');
-		//$cart->truncate(); // remove all active items in cart page
-		//$cart->init();
-		//$cart->addProduct($_product,$params);
+		$cart = Mage::getModel('checkout/cart');
+		$cart->truncate(); // remove all active items in cart page
+		$cart->init();
+		
+		$product = $observer->getEvent()->getProduct();
+		//echo $product->getName();die;
+		$_product = Mage::getModel('catalog/product')
+					->setStoreId(Mage::app()->getStore()->getId())
+					->load($product->getId());
+		$params['qty'] = 1;
+
+		
+		//$cart->addProduct($_product, $params);
 		//$cart->save();
+		 * 
+		 */
 	}
 }
