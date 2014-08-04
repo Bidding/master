@@ -42,6 +42,14 @@ class Gate2play_Paymentgateway_Adminhtml_Model_System_Config_Source_Brands
                 'value' => 'VISA',
                 'label' => Mage::helper('adminhtml')->__('Visa')
             ),
+             array(
+                'value' => 'CASHU',
+                'label' => Mage::helper('adminhtml')->__('CASHU')
+            ),
+            array(
+                'value' => 'ONECARD',
+                'label' => Mage::helper('adminhtml')->__('ONECARD')
+            ),
         );
     }
 }

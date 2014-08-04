@@ -122,7 +122,8 @@ class Gate2play_Paymentgateway_Model_PaymentMethod extends Mage_Payment_Model_Me
                 "&ADDRESS.STATE=$state" .
                 "&ADDRESS.COUNTRY=$country" .
                 "&CONTACT.EMAIL=$email" .
-                "&CONTACT.IP=$ip";
+                "&CONTACT.IP=$ip" .
+        		"&CRITERION.CashU_language=en";
 
         $params = array('http' => array(
                 'method' => 'POST',
