@@ -27,6 +27,12 @@
  * @var Mage_Page_Block_Html_Header $this
  */
 ?>
+<?php 
+$customer_session = Mage::getSingleton('customer/session');
+$win_products = Mage::getModel('points/winner')->getCollection()
+				->addFieldToFilter('customer_id', array('eq' => $customer_session->getCustomer()->getId()))
+				->addFieldToFilter('bought',array('eq' => 0));
+?>
 <div class="header-container greyBg">
     <div class="container">
         <div class="header row">
@@ -63,6 +69,10 @@
             <?php echo $this->getChildHtml('store_language') ?> |
                         <a href="<?php echo $this->getUrl('customer/account/') ?>"><?php echo $this->__('My Account')?></a>
             <a href="<?php echo  $this->getUrl('customer/account/logout') ?>"><?php echo $this->__('Log out')?></a>
+            </div>
+            <div class="credit">
+                            <a class="a-credit" href="<?php echo $this->getUrl('bidding/index/winner')?>"><?php echo $this->__('You won %s items', $win_products->count())?></a>
+            
             </div>
             <div class="creidt">
                 <a class="a-credit" href="<?php echo $this->getUrl('points-store.html') ?>"><?php echo $this->__('Get your Credits')?></a>
