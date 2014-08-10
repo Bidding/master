@@ -31,6 +31,15 @@
 						<method>setPoints</method></points_order_observer>
 				</observers>
 			</gate2play_order_success>
+			<checkout_onepage_controller_success_action>
+				<observers>
+					<points_win_pro_observer>
+						<type>singleton</type>
+						<class>Bidding_Points_Model_Observer</class>
+						<method>setBought</method>
+					</points_win_pro_observer>
+				</observers>
+			</checkout_onepage_controller_success_action>
 	</events>
 	</frontend>
 	<global>

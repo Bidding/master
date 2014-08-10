@@ -75,6 +75,10 @@
 				<schedule><cron_expr>*/1 * * * *</cron_expr></schedule>
 				<run><model>store/cron::checkWinner</model></run>
 			</winner_check_all>
+			<expired_check_all>
+				<schedule><cron_expr>*/1 * * * *</cron_expr></schedule>
+				<run><model>store/cron::checkExpired</model></run>
+			</expired_check_all>
 		</jobs>
 	</crontab>
 </config>

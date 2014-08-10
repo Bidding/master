@@ -55,7 +55,14 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 	{
 		$yesterdayDate = date('Y-m-d H:i:s', strtotime("-1 days"));
 		$winner_produts = Mage::getModel('points/winner')->getCollection()
-		->addFieldToFilter('win_date', array('lteq' => $yesterdayDate));
+		->addFieldToFilter('win_date', array('lteq' => $yesterdayDate))
+		->addFieldToFilter('bought', array('eq' => 0));
+		foreach ($winner_produts as $win_exp_pro)
+		{
+			$exp = Mage::getModel('points/winner')->load($win_exp_pro->getId());
+			$exp->setBought(1);
+			$exp->save();
+		}
 	}
 
 	protected function getTotalBid($bidder_id, $product_id)
