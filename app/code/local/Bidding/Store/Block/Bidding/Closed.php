@@ -11,7 +11,7 @@ class Bidding_Store_Block_Bidding_Closed extends Mage_Core_Block_Template
 		->addAttributeToFilter('can_bid', array('eq' => 1))
 		->addAttributeToFilter('status', array('eq' => 1))
 		->addAttributeToFilter('end_bidding_date', array('lt' => $date));
-		
+		$products->setOrder('entity_id', 'DESC');
 		return $products;
 	}
 	

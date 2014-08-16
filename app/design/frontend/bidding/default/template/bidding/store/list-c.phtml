@@ -15,7 +15,7 @@ if ($_products->count()):
 			$_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate()));
 		?>
 		<li class="item">
-<h3 class="closePrice"><?php echo $this->__('Sold')?> <?php echo Mage::helper('core')->currency($_product->getPrice()); ?></h3>
+<h3 class="closePrice"><?php echo $this->__('Sold')?> <?php echo Mage::helper('core')->currency($_product->getCurrentPrice()); ?></h3>
 			<a
 			href="<?php echo $this->getUrl('bidding/closed') ?>"
 			class="product-image"> <img

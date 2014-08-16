@@ -54,7 +54,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 						$session = Mage::getModel('core/session');
 						$session->addError($this->__("You can't enter on this bidding becuase this is your first time and bidding will end in less than 10 minites"));
 						$data = array('action' => 'false');
-						echo "";
+						echo json_encode($data);
 					}
 					else
 					{

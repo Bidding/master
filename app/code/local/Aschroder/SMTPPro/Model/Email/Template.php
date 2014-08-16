@@ -34,13 +34,13 @@ class Aschroder_SMTPPro_Model_Email_Template extends Mage_Core_Model_Email_Templ
 
 
         // As per parent class - except addition of before and after send events
-
+/*
         if (!$this->isValidForSend()) {
             $_helper->log('Email is not valid for sending, this is a core error that often means there\'s a problem with your email templates.');
             Mage::logException(new Exception('This letter cannot be sent.')); // translation is intentionally omitted
             return false;
         }
-
+*/
         $emails = array_values((array)$email);
         $names = is_array($name) ? $name : (array)$name;
         $names = array_values($names);

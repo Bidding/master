@@ -4,6 +4,7 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 {
 	public function checkWinner()
 	{
+		echo 'Run cron';
 		$date = date('Y-m-d H:i:s');
 		$products = Mage::getModel('catalog/product')->getCollection()
 		->addAttributeToSelect('name')
