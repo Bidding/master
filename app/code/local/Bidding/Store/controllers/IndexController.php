@@ -162,6 +162,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 
 	protected function getDiffTime($endtime)
 	{
+		date_default_timezone_set('Asia/Amman');
 		$datetime1 = time();
 		$datetime2 = strtotime($endtime);
 		$interval  = abs($datetime2 - $datetime1);

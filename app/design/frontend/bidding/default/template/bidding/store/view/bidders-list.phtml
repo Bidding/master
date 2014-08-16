@@ -18,7 +18,7 @@
 					?>
 					<tr>
 						<td class="bidderName">- <?php echo Mage::getModel('customer/customer')->load($bidder->getCustomerId())->getName() ?></td>
-						<td class="bidPrice"><?php echo Mage::helper('core')->currency($bidder->getNewPrice()) ?> <?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?></td>
+						<td class="bidPrice"><?php echo Mage::helper('core')->currency($bidder->getNewPrice()) ?> <?php //echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?></td>
 
 					</tr>
 					<?php endforeach; ?>
