@@ -10,9 +10,6 @@ class Bidding_Store_ProductController extends Mage_Core_Controller_Front_Action
 		
 			if ($_product->getId() && $_product->getCanBid() == 1 && ($_product->getEndBiddingDate() > date('Y-m-d H:i:s')))
 			{
-			echo $_product->getEndBiddingDate();
-			echo '<br />';
-			echo date('Y-m-d H:i:s');
 				$this->loadLayout();
 				$this->renderLayout();
 			}
