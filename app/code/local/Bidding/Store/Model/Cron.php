@@ -83,7 +83,8 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 		$emailTemplateVariables['customer_name'] = $to_name;
 		$emailTemplateVariables['product_url'] = Mage::getUrl('bidding/index/winner');
 		$processedTemplate = $emailTemplate->getProcessedTemplate($emailTemplateVariables);
-
+		$emailTemplate->setSenderName('AuctionsVIP.com');
+		$emailTemplate->setSenderEmail('info@auctionsvip.com');
 		$emailTemplate->send($to_email, $to_name, $emailTemplateVariables);
 	}
 }

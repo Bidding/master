@@ -1859,6 +1859,7 @@ margin-bottom: 20px;}
     color: #fff;
 }
 .clickPrice{
+font-family: Tahoma !important;
 background: url(../images/perclick.png) no-repeat;
 height: 56px;
 width: 56px;
