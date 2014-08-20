@@ -25,5 +25,16 @@ class Bidding_Store_Block_Bidding_Closed extends Mage_Core_Block_Template
 		$currentBidder->getSelect()->limit(1);
 		return $currentBidder->getData();
 	}
+	
+	public function getProduct($id)
+	{
+		$product = Mage::getModel('catalog/product')->load($id);
+		return $product;
+	}
+	
+	public function getCustomerSession()
+	{
+		return Mage::getSingleton('customer/session');
+	}
 
 }

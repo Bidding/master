@@ -11,7 +11,7 @@ $winner_name = Mage::getModel('customer/customer')->load($bidder[0]['customer_id
 ?>
 	<div class="closed-product product-<?php echo $product->getId() ?>">
 		<div class="images">
-			<img src="<?php echo $product->getImageUrl(); ?>" />
+			<a href="<?php echo $this->getUrl('bidding/closed/preview', array('id' => $product->getId()))?>"><img src="<?php echo $product->getImageUrl(); ?>" /></a>
 			<div class="closed-price">
 				<p><?php echo $this->__('Closed price is') ?> <?php echo Mage::helper('core')->currency($product->getCurrentPrice()) ?></p>
 			</div>

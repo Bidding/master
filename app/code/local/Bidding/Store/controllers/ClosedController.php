@@ -6,4 +6,10 @@ class Bidding_Store_ClosedController extends Mage_Core_Controller_Front_Action
 		$this->loadLayout();
 		$this->renderLayout();
 	}
+	
+	public function previewAction()
+	{
+		$this->loadLayout();
+		$this->renderLayout();
+	}
 }
