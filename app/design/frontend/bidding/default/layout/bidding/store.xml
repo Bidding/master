@@ -82,6 +82,42 @@
 			<block type="store/bidding_closed" name="closed.bidding" template="bidding/store/bidding/closed.phtml" />
 		</reference>
 	</store_closed_index>
+	
+	<store_closed_preview>
+		<reference name="root">
+			<action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+				<reference name="head">
+		<action method="addJs"><script>socket/push.js</script></action>
+            <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/configurable.js</script></action>
+
+            <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/><!--<if/><condition>can_load_calendar_js</condition>--></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar.js</name><!--<params/><if/><condition>can_load_calendar_js</condition>--></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name><!--<params/><if/><condition>can_load_calendar_js</condition>--></action>
+        </reference>
+		<reference name="content">
+			<block type="store/bidding_closed" name="closed.bidding.preview" template="bidding/store/view/closed.phtml">
+			                        	<block type="store/product_listofbidders" name="bidders.list" as="bidders.list" template="bidding/store/view/bidders-list.phtml" />
+			                        	                <block type="catalog/product_view_media" name="product.info.media" as="media" template="shopgo/zoom/media.phtml"/>
+			                        	
+			
+			</block>
+		</reference>
+		<!-- Zoom -->
+            <reference name="head">
+        
+            <action method="addCss" ifconfig="shopgo_zoom/general/enabled"><script>shopgo/zoom/css/jquery.swinxy-combined.css</script></action>        
+    	    <action method="addJs" ifconfig="shopgo_zoom/general/enabled"><script>shopgo/zoom/jquery.swinxy-combined.min.js</script></action>
+            <action method="addJs" ifconfig="shopgo_zoom/general/mouseweel"><script>shopgo/zoom/jquery.mousewheel.js</script></action>
+
+     
+        </reference>
+        <reference name="product.info.media">
+           <action method="setTemplate" ifconfig="shopgo_zoom/general/enabled"><template>shopgo/zoom/media.phtml</template></action>
+        </reference>   <!-- End of Zoom -->
+	</store_closed_preview>
+	
 	<store_next_index>
 		<reference name="root">
 			<action method="setTemplate"><template>page/1column.phtml</template></action>
