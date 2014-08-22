@@ -311,7 +311,14 @@ Timer = {
 			Time +=timeObject.Weeks + ' Weeks ' ;
 		}
 		if(timeObject.Days){
-			Time +=timeObject.Days + ' Days ' ;
+			if(timeObject.Days == 1)
+			{
+				Time +='<span class="days">' + timeObject.Days + ' <?php echo $this->__('Day') ?> ' + '</span>';
+			}
+			else
+			{
+				Time +='<span class="days">' + timeObject.Days + ' <?php echo $this->__('Days') ?> ' + '</span>';
+			}
 		}
 
 		Time += timeObject.Hours +':'+timeObject.Minutes+':'+timeObject.Seconds;

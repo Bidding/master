@@ -2044,12 +2044,16 @@ color: #fff200 !important;
 .closed-div {
 	margin-top: 60px;
 	}
-	.closed-header {
+.closed-header {
 	text-align: right;
 	}
 div.cf {
 	float: right;
 	}
-	div.brandicon {
+div.brandicon {
 	right: 26%;
 	}
+.days {
+float: left;
+margin-left: 6px;
+}
