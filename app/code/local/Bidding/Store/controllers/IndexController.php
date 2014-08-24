@@ -100,7 +100,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 
 					} else {
 						$session = Mage::getModel('core/session');
-						$session->addError($this->__("Your credit will end soon"));
+						$session->addError($this->__("This bidding has been closed"));
 						$this->_redirect('/');
 					}
 				}
