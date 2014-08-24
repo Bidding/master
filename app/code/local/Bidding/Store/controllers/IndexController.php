@@ -65,6 +65,8 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 							$newPrice = $_product->getCurrentPrice() + $_product->getCpc();
 							if ($newPrice > $_product->getPrice())
 							{
+								$_product->setWebsiteIDs(array(1));
+								$_product->setStoreId(0);
 								$_product->setEndBiddingDate(date('Y-m-d H:i:s',strtotime("-1 days")));
 								$_product->save();
 								$session = Mage::getModel('core/session');
