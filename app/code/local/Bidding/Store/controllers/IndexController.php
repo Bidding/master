@@ -55,7 +55,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 						if (!$this->getTotalBid($customerSession->getCustomerId(), $data['productId']) && $this->getDiffTime($_product->getEndBiddingDate()))
 						{
 							$session = Mage::getModel('core/session');
-							$session->addError($this->__("You can't enter on this bidding becuase this is your first time and bidding will end in less than 10 minites"));
+							$session->addError($this->__("You can't enter on this bidding becuase this is your first time and bidding will end in less than 30 minites"));
 							$data = array('action' => 'false');
 							echo json_encode($data);
 						}
