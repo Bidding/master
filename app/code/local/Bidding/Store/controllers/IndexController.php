@@ -78,10 +78,10 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 								$bid_result = $this->setCustomerBid($customerSession->getCustomerId(), $data['productId'], $customerSession->getCustomer()->getName());
 
 								//Check if customer spend X points or more to win product
-								if ($this->getDiffTime($_product->getEndBiddingDate()) && ($this->getTotalBid($customerSession->getCustomerId(), $data['productId']) < 5))
+								if ($this->getDiffTime($_product->getEndBiddingDate()) && ($this->getTotalBid($customerSession->getCustomerId(), $data['productId']) < 20))
 								{
 									$session = Mage::getModel('core/session');
-									$session->addError($this->__("You should spend 5 points or more to win this bid"));
+									$session->addError($this->__("You should spend 20 points or more to win this bid"));
 									$data = array_merge($data, array('reload' => 'true'));
 								}
 
@@ -178,7 +178,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 		$datetime2 = strtotime($endtime);
 		$interval  = abs($datetime2 - $datetime1);
 		$minutes   = round($interval / 60);
-		if ( $minutes <= 10 )
+		if ( $minutes <= 30 )
 		return true;
 		else
 		return false;

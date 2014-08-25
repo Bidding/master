@@ -22,7 +22,7 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 					->addFieldToFilter('product_id', array('eq' => $product->getId()));
 					$winner_bidder->getSelect()->order('id desc');
 					$winner_bidder = $winner_bidder->getData();
-					if ($this->getTotalBid($winner_bidder[0]['customer_id'], $product->getId()) >= 5)
+					if ($this->getTotalBid($winner_bidder[0]['customer_id'], $product->getId()) >= 20)
 					{
 						$customer = Mage::getModel('customer/customer')->load($winner_bidder[0]['customer_id']);
 
