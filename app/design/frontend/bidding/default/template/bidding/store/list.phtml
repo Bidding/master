@@ -199,9 +199,10 @@ $end_date = strtotime($_product->getEndBiddingDate()) * 1000 - 10800000;
 <script>
 start_<?php echo $_product->getId();?> = <?php echo $start_date; ?>;
 end_<?php echo $_product->getId();?> = <?php echo $end_date; ?>;//plus week o ns
-setInterval(function(){
+product_<?php echo $_product->getId()?>_int = setInterval(function(){
 	end_<?php echo $_product->getId();?>  = end_<?php echo $_product->getId();?> - 1000;
 	Timer.init(start_<?php echo $_product->getId();?>,end_<?php echo $_product->getId();?> ,"timerContainer-<?php echo $_product->getId();?>",function(){
+		clearInterval(product_<?php echo $_product->getId()?>_int)
 		window.location = "<?php echo $this->getUrl() ?>";
 		document.getElementById("button<?php echo $_product->getId() ?>").remove();
 		document.getElementById("timerContainer-<?php echo $_product->getId() ?>").remove();
@@ -233,6 +234,7 @@ Timer = {
 	init:function(start,end,objectId,timerFinish){
 		if(end<=start){
 			timerFinish.call();
+			return;
 		}
 		stringObject = {};
 		var startDate = new Date(start);
