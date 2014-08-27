@@ -105,4 +105,9 @@ class Mage_Adminhtml_Block_Widget_Grid_Container extends Mage_Adminhtml_Block_Wi
     {
         return 'width:50%;';
     }
+    
+    public function remove()
+    {
+    	return false;
+    }
 }

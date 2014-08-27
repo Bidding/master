@@ -57,6 +57,11 @@
 			<store>
 				<class>Bidding_Store_Block</class>
 			</store>
+			<adminhtml>
+				<rewrite>
+					<customer_edit_tabs>Bidding_Store_Block_Adminhtml_Customer_Edit_Tabs</customer_edit_tabs>
+				</rewrite>
+			</adminhtml>
 		</blocks>
 		<models>
 			<store>

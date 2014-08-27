@@ -24,6 +24,7 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+<?php if(!$this->remove()) { ?>
 <div class="content-header">
     <table cellspacing="0">
         <tr>
@@ -32,6 +33,7 @@
         </tr>
     </table>
 </div>
+<?php } ?>
 <div>
     <?php echo $this->getGridHtml() ?>
 </div>

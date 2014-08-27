@@ -5,4 +5,14 @@
             <block type="store/adminhtml_store" name="store" as="store" />
         </reference>
     </adminhtml_store_index>
+    <adminhtml_store_grid>
+  		<reference name="root">
+    		<block type="store/adminhtml_customer_edit_listing" name="root" output="toHtml" />
+  		</reference>
+	</adminhtml_store_grid>
+    <adminhtml_store_history>
+        <reference name="content">
+            <block type="store/adminhtml_customer_edit_listing" name="history" as="history" />
+        </reference>
+    </adminhtml_store_history>
 </layout>
