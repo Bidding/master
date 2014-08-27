@@ -1756,7 +1756,7 @@ font-size: 0.9em;
     font-size: 0.8em;
     color: #e3e6e9;
 }
-.wideSection .Section.oneThird span:last-child{color: #e3e6e9!important;}
+.wideSection .Section.oneThird span:last-child{color: #e3e6e9!important; display: block;}
 .wideSection .Section span:last-child{
     color: yellow!important;
 }
@@ -2044,6 +2044,16 @@ color: #fff200 !important;
 .closed-div {
 	margin-top: 60px;
 	}
-	.closed-header {
+.closed-header {
 	text-align: right;
 	}
+div.cf {
+	float: right;
+	}
+div.brandicon {
+	right: 26%;
+	}
+.days {
+float: left;
+margin-left: 6px;
+}

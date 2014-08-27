@@ -22,7 +22,7 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 					->addFieldToFilter('product_id', array('eq' => $product->getId()));
 					$winner_bidder->getSelect()->order('id desc');
 					$winner_bidder = $winner_bidder->getData();
-					if ($this->getTotalBid($winner_bidder[0]['customer_id'], $product->getId()) >= 5)
+					if ($this->getTotalBid($winner_bidder[0]['customer_id'], $product->getId()) >= 20)
 					{
 						$customer = Mage::getModel('customer/customer')->load($winner_bidder[0]['customer_id']);
 
@@ -83,7 +83,8 @@ class Bidding_Store_Model_Cron extends Mage_Core_Model_Abstract
 		$emailTemplateVariables['customer_name'] = $to_name;
 		$emailTemplateVariables['product_url'] = Mage::getUrl('bidding/index/winner');
 		$processedTemplate = $emailTemplate->getProcessedTemplate($emailTemplateVariables);
-
+		$emailTemplate->setSenderName('AuctionsVIP.com');
+		$emailTemplate->setSenderEmail('info@auctionsvip.com');
 		$emailTemplate->send($to_email, $to_name, $emailTemplateVariables);
 	}
 }
