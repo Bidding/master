@@ -52,10 +52,11 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 					{
 
 						//Check if customer can big before time finish with X time
-						if (!$this->getTotalBid($customerSession->getCustomerId(), $data['productId']) && $this->getDiffTime($_product->getEndBiddingDate()))
+						if (!$this->getTotalBid($customerSession->getCustomerId(), $data['productId']) && $this->getDiffTimeForBid($_product->getId()))
 						{
 							$session = Mage::getModel('core/session');
-							$session->addError($this->__("You can't enter on this bidding becuase this is your first time and bidding will end in less than 7 hours"));
+							$diff = ($_product->getDiffTimeForBid() ? $_product->getDiffTimeForBid(): 60);
+							$session->addError($this->__("You can't enter on this bidding becuase this is your first time and bidding will end in less than %s minute", $diff));
 							$data = array('action' => 'false');
 							echo json_encode($data);
 						}
@@ -78,10 +79,13 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 								$bid_result = $this->setCustomerBid($customerSession->getCustomerId(), $data['productId'], $customerSession->getCustomer()->getName());
 
 								//Check if customer spend X points or more to win product
-								if ($this->getDiffTime($_product->getEndBiddingDate()) && ($this->getTotalBid($customerSession->getCustomerId(), $data['productId']) < 40))
+								$diff_points = ($_product->getNumOfPoints() ? $_product->getNumOfPoints(): 40);
+
+								if ($this->getDiffTimeForPoints($_product->getId()) && ($this->getTotalBid($customerSession->getCustomerId(), $data['productId']) < $diff_points))
 								{
 									$session = Mage::getModel('core/session');
-									$session->addError($this->__("You should spend 40 points or more to win this bid"));
+									
+									$session->addError($this->__("You should spend %s points or more to win this bid", $diff_points));
 									$data = array_merge($data, array('reload' => 'true'));
 								}
 
@@ -171,14 +175,31 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 		return $count->count();
 	}
 
-	protected function getDiffTime($endtime)
+	protected function getDiffTimeForBid($product_id)
 	{
 		date_default_timezone_set('Asia/Amman');
+		$pro = Mage::getModel('catalog/product')->load($product_id);
 		$datetime1 = time();
-		$datetime2 = strtotime($endtime);
+		$datetime2 = strtotime($pro->getEndBiddingDate());
 		$interval  = abs($datetime2 - $datetime1);
 		$minutes   = round($interval / 60);
-		if ( $minutes <= 60 )
+		$diff = ($pro->getDiffTimeForBid() ? $pro->getDiffTimeForBid(): 60);
+		if ( $minutes <= $diff )
+		return true;
+		else
+		return false;
+	}
+
+	protected function getDiffTimeForPoints($product_id)
+	{
+		date_default_timezone_set('Asia/Amman');
+		$pro = Mage::getModel('catalog/product')->load($product_id);
+		$datetime1 = time();
+		$datetime2 = strtotime($pro->getEndBiddingDate());
+		$interval  = abs($datetime2 - $datetime1);
+		$minutes   = round($interval / 60);
+		$diff = ($pro->getDiffTimeForPoints() ? $pro->getDiffTimeForPoints(): 60);
+		if ( $minutes <= $diff )
 		return true;
 		else
 		return false;
