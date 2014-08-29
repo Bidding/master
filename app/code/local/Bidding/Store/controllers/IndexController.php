@@ -178,7 +178,7 @@ class Bidding_Store_IndexController extends Mage_Core_Controller_Front_Action
 		$datetime2 = strtotime($endtime);
 		$interval  = abs($datetime2 - $datetime1);
 		$minutes   = round($interval / 60);
-		if ( $minutes <= 420 )
+		if ( $minutes <= 60 )
 		return true;
 		else
 		return false;
