@@ -43,7 +43,9 @@ class Bidding_Store_Block_Product extends Mage_Core_Block_Template
 		->addAttributeToFilter('status', array('eq' => 1))
 		->addAttributeToFilter('start_bidding_date', array('gteq' => '2014-08-20 00:00:00'))
 		->addAttributeToFilter('end_bidding_date', array('lt' => $date));
-		$products->setOrder('end_bidding_date', 'DESC');
+		
+		$products->getSelect()->order('end_bidding_date desc');
+		
 		return $products;
 	}
 
