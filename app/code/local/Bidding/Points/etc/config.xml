@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Bidding_Points>
-			<version>1.0.11</version>
+			<version>1.0.12</version>
 		</Bidding_Points>
 	</modules>
 	<frontend>
@@ -68,6 +68,9 @@
 					<winner>
 						<table>customer_winnder_history</table>
 					</winner>
+					<log>
+						<table>customer_online_log</table>
+					</log>
 				</entities>
 			</points_mysql4>
 		</models>
