@@ -100,7 +100,7 @@ if ($customer_session->isLoggedIn())
 	} else {
 		$path = dirname(__FILE__) . '/var/session/';
 		$query = '
-		SELECT * FROM customer_online_log WHERE id != (SELECT max(id) FROM customer_online_log WHERE customer_id =' . $customer_session->getCustomerId() . ') 
+		SELECT * FROM customer_online_log WHERE customer_id = ' . $customer_session->getCustomerId() . ' AND id != (SELECT max(id) FROM customer_online_log WHERE customer_id =' . $customer_session->getCustomerId() . ') 
 		';
 		$resource = Mage::getSingleton('core/resource');
 		$writeConnection = $resource->getConnection('core_write');
