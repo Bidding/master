@@ -1,0 +1,349 @@
+<style>
+.product-image {
+width: 100% !important;
+}
+li.item {
+width: 48%;
+float: left;
+margin-left: 11px;
+margin-bottom: 10px;
+}
+</style>
+<?php
+$_products = $this->getProducts();
+if ($_products->count()):
+?>
+<script type="text/javascript">
+<!--
+window.onload = function () {
+	window.socket = io.connect('www.auctionsvip.com:3700');
+	socket.on('message', function (data) {
+		jQuery("#price-box-" + data.PI).html(data.price);
+		jQuery("#price-box-" + data.PI).parent().parent().addClass('highlight').delay(500).queue(
+			function(next){
+				jQuery("#price-box-" + data.PI).parent().parent().removeClass('highlight');
+				next();
+			}
+			);
+
+		jQuery(".biddername" + data.PI).html(data.bidder);
+		jQuery(".biddername" + data.PI).addClass('highlight').delay(500).queue(
+			function(next){
+				jQuery(".biddername" + data.PI).removeClass('highlight');
+				next();
+			}
+			);
+	});
+}
+//-->
+</script>
+<div id="messages_product_view">
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+</div>
+<?php
+$customerSession = $this->getCustomerSession();?>
+<div class="wrapper-content">
+	<ul class="ul-items">
+	<?php
+	$i = 1;
+	foreach ($_products as $_product):
+	$_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate()));
+	?>
+		<li class="item"><a
+			href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
+			class="product-image">
+				<div class="clickPrice">
+								<?php 	
+				$array_cpc = explode('.', $_product->getCpc());
+				echo (int)substr($array_cpc[1],0,2) . '&cent;'; 
+				?>
+				</div> <img src="<?php echo $_product->getImageUrl() ?>" /> </a>
+			<div class="bidOptions">
+
+
+				<div class="section">
+				<?php
+				//if($customerSession->isLoggedIn()):?>
+					<div>
+						<!-- <span id="clock<?php echo $i; ?>"></span> -->
+						<span id="timerContainer-<?php echo $_product->getId();?>"></span>
+					</div>
+
+					<?php //endif;?>
+					<div>
+						<div class="price" id="price<?php echo $_product->getId() ?>"
+							style="margin: 0">
+							<span id="price-box-<?php echo $_product->getId()?>"
+								class="largerF"> <?php echo Mage::helper('core')->currency($_product->getCurrentPrice()) ?>
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<?php
+				if(!$customerSession->isLoggedIn())
+				{
+					?>
+				<div class="section center">
+					<button type="button" title="bid" class="button bidButton"
+						id="button<?php echo $_product->getId() ?>"
+						onclick="javascript:alert('Please login')">
+						<?php echo $this->__('Bid')?>
+					</button>
+
+				</div>
+				<?php $bidder = $this->getCurrentBidder($_product->getId());
+				if ($bidder):
+				$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
+				?>
+				<div class="section right">
+					<div>
+					<?php echo $this->__('Bidder')?>
+					</div>
+					<div class="biddername<?php echo $_product->getId() ?>">
+					<?php echo $bidder ?>
+					</div>
+				</div>
+				<?php endif;
+				}
+				else
+				{
+					?>
+				<div class="section center">
+					<form action="#" method="post"
+						class="formbid<?php echo $_product->getId() ?>"
+						id="formbid<?php echo $_product->getId() ?>">
+						<?php echo $this->getBlockHtml('formkey') ?>
+						<input type="hidden" name="productId"
+							value="<?php echo $_product->getId() ?>" />
+						<button type="submit" title="bid" class="button bidButton"
+							id="button<?php echo $_product->getId() ?>">
+							<?php echo $this->__('Bid')?>
+						</button>
+
+					</form>
+				</div>
+
+				<?php
+				$bidder = $this->getCurrentBidder($_product->getId());
+				if($bidder):
+				$bidder = Mage::getModel('customer/customer')->load($bidder[0]['customer_id'])->getName();
+				?>
+				<div class="section right">
+					<div class="winner">
+					<?php echo $this->__('Bidder')?>
+					</div>
+					<div class="biddername<?php echo $_product->getId() ?>">
+					<?php echo $bidder ?>
+					</div>
+				</div>
+				<?php endif; ?>
+				<?php /*
+				<div class="wideSection">
+				<div class="price-box Section" >
+				<span class="reqular-price"> <?php echo $this->__('Open Bid Price:') . ' '?>
+				</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getOpeningPrice()); ?>
+				</span>
+				</div>
+				<div class="price-box Section" >
+				<span class="reqular-price"> <?php echo $this->__('Close Price:') . ' '?>
+				</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getPrice()); ?>
+				</span>
+				</div>
+				<div class="price-box Section" >
+				<span class="reqular-price"> <?php echo $this->__('Retail Price:') . ' '?>
+				</span><span class="open-price"><?php echo Mage::helper('core')->currency($_product->getRetailPrice()); ?>
+				</span>
+				</div>
+				</div>
+
+				*/?>
+			</div> 
+			
+			<script>
+jQuery("#formbid<?php echo $_product->getId() ?>").submit(function(event) {
+	event.preventDefault();
+	jQuery("#button<?php echo $_product->getId() ?>").attr("disabled", true);
+	jQuery("#button<?php echo $_product->getId() ?>").fadeOut();
+	var values = jQuery(this).serialize();
+	jQuery.ajax({
+		url: "<?php echo $this->getUrl('bidding/index/bidPost') ?>",
+		type: "post",
+		data: values,
+		success: function(resp){
+			resp = jQuery.parseJSON(resp);
+			if(resp.action == 'true')
+			{
+				jQuery("#button<?php echo $_product->getId() ?>").attr("disabled", false); 
+				jQuery("#button<?php echo $_product->getId() ?>").delay(500).fadeIn(50);
+				window.socket.emit('send', { message: 1, PI: resp.PI, price: resp.price, bidder: resp.bidder, bidderTable: resp.bidderTable });
+				if (resp.reload == 'true')
+				{
+					location.reload();
+				}
+
+			}
+			else
+			{
+				location.reload();
+			}
+		},
+		error: function(){
+			alert('faild');
+		}
+	});
+});
+</script> <?php
+}
+?>
+		</li>
+<?php 
+$start_date = microtime(true) * 1000 ;
+$end_date = strtotime($_product->getEndBiddingDate()) * 1000 - 10800000; 
+?>
+<script>
+start_<?php echo $_product->getId();?> = <?php echo $start_date; ?>;
+end_<?php echo $_product->getId();?> = <?php echo $end_date; ?>;//plus week o ns
+product_<?php echo $_product->getId()?>_int = setInterval(function(){
+	end_<?php echo $_product->getId();?>  = end_<?php echo $_product->getId();?> - 1000;
+	Timer.init(start_<?php echo $_product->getId();?>,end_<?php echo $_product->getId();?> ,"timerContainer-<?php echo $_product->getId();?>",function(){
+		clearInterval(product_<?php echo $_product->getId()?>_int)
+		window.location = "<?php echo $this->getUrl() ?>";
+		document.getElementById("button<?php echo $_product->getId() ?>").remove();
+		document.getElementById("timerContainer-<?php echo $_product->getId() ?>").remove();
+	});
+},1000)
+</script> 
+		<?php
+$i++;
+endforeach;
+?>
+	</ul>
+</div>
+<?php
+else :
+	?>
+<p class="note-msg">
+	<?php echo $this->__('There are no products for bid right now')?>
+</p>
+<?php
+endif;
+?>
+
+
+<script type="text/javascript">
+
+
+
+Timer = {
+	init:function(start,end,objectId,timerFinish){
+		if(end<=start){
+			timerFinish.call();
+			return;
+		}
+		stringObject = {};
+		var startDate = new Date(start);
+		var endDate = new Date(end);
+		var DateElements = Timer.getDateElements(startDate,endDate);
+		var difference = Math.abs(startDate - endDate); // milli 
+		for (var i = DateElements.length - 1; i >= 0; i--) {
+			Timer['getDifference'+DateElements[i]](difference);
+		};
+		Timer.drawTimer(stringObject,objectId);
+	},
+	getDateElements:function(startDate,endDate){
+		var timeDiff = endDate - startDate; 
+		var elements = [];
+		if(timeDiff/3600000/24/7>1){
+			elements.push('Weeks');
+		}
+		if(timeDiff/3600000/24>1){
+			elements.push('Days');
+		}
+		elements.push('OnlyTime');
+
+		return elements;
+	},
+	getDifferenceDays:function(timeDiff){
+		timeDiff1 = timeDiff/3600000/24;//Days
+		var timeDiffW = parseInt(timeDiff/3600000/24/7);
+		timeDiffWeeks = timeDiff1-((timeDiff1/3600000/24)/7*timeDiffW);//Weeks
+		remainingDays = timeDiffWeeks % parseInt(timeDiffWeeks) ;
+		stringObject['Days'] = parseInt(timeDiffWeeks - (timeDiffW*7));
+		return ;
+	},
+	getDifferenceWeeks:function(timeDiff){
+		var timeDiff = timeDiff/3600000/24/7;
+		stringObject['Weeks'] = parseInt(timeDiff);
+		return;
+	},
+	getDifferenceOnlyTime:function(difference){
+		var timeDiff = difference / 3600000 /24 ; // Days
+		if(!(timeDiff<1)){
+			var remainingDays = timeDiff % parseInt(timeDiff);//remaing days in decimals !!
+		}
+		else{
+			var remainingDays = timeDiff ;
+		}
+		if(!remainingDays){
+			stringObject['Hours'] = 00;
+			stringObject['Minutes'] = 00;
+			stringObject['Seconds'] = 00;
+		}else{
+			var hours = remainingDays * 24;
+			if(hours % parseInt(hours)){
+				var remainingMinMil = hours % parseInt(hours);
+				stringObject["Hours"] = parseInt(hours);
+			}else{
+				var remainingMinMil = hours;
+				var hours = 0;
+				stringObject["Hours"] = parseInt(hours);
+			}
+			var minutes = remainingMinMil * 60;
+			if(minutes % parseInt(minutes)){
+				var remainingSecMil = minutes % parseInt(minutes);
+				stringObject["Minutes"] = parseInt(minutes);
+			}else{
+				var remainingSecMil = minutes;
+				var minutes = 0;
+				stringObject["Minutes"] = parseInt(minutes);
+			}
+			var seconds = remainingSecMil * 60;
+			if(seconds > 60){
+				seconds = 60;
+			}
+			if(seconds){
+				var seconds = Math.round(seconds);
+				stringObject["Seconds"] = Math.round(seconds);
+			}else{
+				var seconds = 0;
+				stringObject["Seconds"] = Math.round(seconds);
+			}
+		}
+		return;
+	},
+	drawTimer:function(timeObject,timerContainer ){
+		var Time = ""
+		if(timeObject.Weeks){
+			Time +=timeObject.Weeks + ' Weeks ' ;
+		}
+		if(timeObject.Days){
+			if(timeObject.Days == 1)
+			{
+				Time +='<span class="days">' + timeObject.Days + ' <?php echo $this->__('D') ?> ' + '</span>';
+			}
+			else
+			{
+				Time +='<span class="days">' + timeObject.Days + ' <?php echo $this->__('D') ?> ' + '</span>';
+			}
+		}
+
+		Time += timeObject.Hours +':'+timeObject.Minutes+':'+timeObject.Seconds;
+		document.getElementById(timerContainer).innerHTML = Time;
+
+	}
+
+
+}
+</script>
+

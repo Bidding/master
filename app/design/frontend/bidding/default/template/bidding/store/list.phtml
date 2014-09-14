@@ -39,7 +39,7 @@ $customerSession = $this->getCustomerSession();?>
 	$_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate()));
 	?>
 		<li class="item"><a
-			href="<?php echo $this->getUrl('bidding/product/view', array('id'=>$_product->getId())) ?>"
+			href="<?php echo $this->getUrl('bidding/active') ?>"
 			class="product-image">
 				<div class="clickPrice">
 								<?php 	
