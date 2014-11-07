@@ -204,7 +204,7 @@ jQuery("#formbid<?php echo $_product->getId() ?>").submit(function(event) {
 </div>
 <?php 
 $start_date = microtime(true) * 1000 ;
-$end_date = strtotime($_product->getEndBiddingDate()) * 1000; 
+$end_date = strtotime($_product->getEndBiddingDate()) * 1000 - 10800000; 
 ?>
 <script>
 start_<?php echo $_product->getId();?> = <?php echo $start_date; ?>;
