@@ -46,7 +46,7 @@ $customerSession = $this->getCustomerSession();
 					<?php if($customerSession->isLoggedIn()):
 		$customer = Mage::getModel('customer/customer')->load($customerSession->getId());
 		?>
-		<div style="background-color:black; padding: 5px; color: white;"><span class="my-points"><?php echo $this->__('My Points') ?> <span class="points"><?php echo $this->getPoints()->getBalance() ?></span></span><span class="needed-span"><?php echo $this->__('Needed Points')?> <span class="needed"><?php echo ($_product->getPoints() ? $_product->getPoints() : 0 ) ?></span></span></div>
+		<div style="background-color:black; padding: 5px; color: white;"><span class="my-points"><?php echo $this->__('My Points') ?> <span class="points"><?php echo $this->getPoints()->getBalance() ?></span></span><span class="needed-span"><?php echo $this->__('Needed Points')?> <span class="needed"><?php echo ($_product->getNumOfPoints() ? $_product->getNumOfPoints() : 0 ) ?></span></span></div>
 		<?php endif;?>
 			<?php echo $this->getChildHtml('media') ?>
 			<!-- Biiiddddd -->
