@@ -38,8 +38,14 @@ $customerSession = $this->getCustomerSession();?>
 	foreach ($_products as $_product):
 	$_productDate = date('Y/m/d H:i:s',strtotime($_product->getEndBiddingDate()));
 	?>
-		<li class="item"><a
-			href="<?php echo $this->getUrl('bidding/active') ?>"
+		<li class="item">
+		<?php if($customerSession->isLoggedIn()):
+		$customer = Mage::getModel('customer/customer')->load($customerSession->getId());
+		?>
+		<div style="background-color:black; padding: 5px; color: white;"><span class="my-points"><?php echo $this->__('My Points') ?> <span class="points"><?php echo $this->getPoints()->getBalance() ?></span></span><span class="needed-span"><?php echo $this->__('Needed Points')?> <span class="needed"><?php echo ($_product->getPoints() ? $_product->getPoints() : 0 ) ?></span></span></div>
+		<?php endif;?>
+		<a
+			href="<?php echo $this->getUrl('bidding/product/view', array('id' => $_product->getId())) ?>"
 			class="product-image">
 				<div class="clickPrice">
 								<?php 	
@@ -171,6 +177,7 @@ jQuery("#formbid<?php echo $_product->getId() ?>").submit(function(event) {
 			{
 				jQuery("#button<?php echo $_product->getId() ?>").attr("disabled", false); 
 				jQuery("#button<?php echo $_product->getId() ?>").delay(500).fadeIn(50);
+				jQuery(".points").html(jQuery(".points").text() - 1);
 				window.socket.emit('send', { message: 1, PI: resp.PI, price: resp.price, bidder: resp.bidder, bidderTable: resp.bidderTable });
 				if (resp.reload == 'true')
 				{

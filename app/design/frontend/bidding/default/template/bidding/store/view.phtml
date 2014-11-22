@@ -33,6 +33,9 @@
 ?>
 <?php $_helper = $this->helper('catalog/output'); ?>
 <?php $_product = $this->getProduct(); ?>
+<?php
+$customerSession = $this->getCustomerSession();
+?>
 <div id="messages_product_view">
 	<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
 </div>
@@ -40,13 +43,14 @@
 
 	<div class="product-essential">
 		<div class="product-img-box span5">
-			
+					<?php if($customerSession->isLoggedIn()):
+		$customer = Mage::getModel('customer/customer')->load($customerSession->getId());
+		?>
+		<div style="background-color:black; padding: 5px; color: white;"><span class="my-points"><?php echo $this->__('My Points') ?> <span class="points"><?php echo $this->getPoints()->getBalance() ?></span></span><span class="needed-span"><?php echo $this->__('Needed Points')?> <span class="needed"><?php echo ($_product->getPoints() ? $_product->getPoints() : 0 ) ?></span></span></div>
+		<?php endif;?>
 			<?php echo $this->getChildHtml('media') ?>
 			<!-- Biiiddddd -->
 	<div class="bidOptions">
-
-<?php
-		$customerSession = $this->getCustomerSession();?>
 		<div class="section">
 					<?php 
 		//if($customerSession->isLoggedIn()):?>
@@ -125,6 +129,7 @@ jQuery("#formbid<?php echo $_product->getId() ?>").submit(function(event) {
 			{
 				jQuery("#view-bid-button").attr("disabled", false); 
 				jQuery("#view-bid-button").delay(500).fadeIn(50);
+				jQuery(".points").html(jQuery(".points").text() - 1);
 				window.socket.emit('send', { message: 1, PI: resp.PI, price: resp.price, bidder: resp.bidder, bidderTable: resp.bidderTable });
 				if (resp.reload == 'true')
 				{

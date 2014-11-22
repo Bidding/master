@@ -2057,3 +2057,6 @@ div.brandicon {
 float: left;
 margin-left: 6px;
 }
+.needed-span {
+float: left !important;
+}

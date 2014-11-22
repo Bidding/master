@@ -266,5 +266,11 @@ class Bidding_Store_Block_Product_View extends Mage_Catalog_Block_Product_View
 		$currentBidder->getSelect()->limit(1);
 		return $currentBidder->getData();
 	}
+	
+	public function getPoints()
+	{
+		$pointsModel = Mage::getModel('points/points')->load(Mage::getSingleton('customer/session')->getCustomerId(),'customer_id');
+		return $pointsModel;
+	}
 }
 ?>

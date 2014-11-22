@@ -61,4 +61,10 @@ class Bidding_Store_Block_Product extends Mage_Core_Block_Template
 		$products->getSelect()->limit(3);
 		return $products;
 	}
+	
+	public function getPoints()
+	{
+		$pointsModel = Mage::getModel('points/points')->load(Mage::getSingleton('customer/session')->getCustomerId(),'customer_id');
+		return $pointsModel;
+	}
 }
