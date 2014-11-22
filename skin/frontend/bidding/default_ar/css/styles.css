@@ -2060,3 +2060,6 @@ margin-left: 6px;
 .needed-span {
 float: left !important;
 }
+.div-needed {
+	text-align: right !important;
+}
