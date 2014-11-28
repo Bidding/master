@@ -2063,3 +2063,6 @@ float: left !important;
 .div-needed {
 	text-align: right !important;
 }
+.terms-check {
+	margin-left: 5px; float: right;
+	}

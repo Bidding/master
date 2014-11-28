@@ -2025,3 +2025,6 @@ color: #fff200 !important;
 .needed-span {
 float: right !important;
 }
+.terms-check {
+	margin-right: 5px; float: left;
+	}

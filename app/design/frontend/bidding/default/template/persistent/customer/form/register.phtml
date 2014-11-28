@@ -232,47 +232,20 @@
 			<?php echo $this->getChildHtml('persistent.remember.me.tooltip'); ?>
 		</div>
 		<!--  Accept Information -->
-		<div class="fieldset">
-			<h2 class="legend">Legal Terms &amp; Conditions</h2>
-			<ul class="form-list">
-				<li class="fields">
-					<div class="field" style="width: 100%">
-						<input type="checkbox" class="required-entry" name="terms-check"
-							id="terms" style="margin-right: 5px; float: left;"> <label
-							for="terms" class="required">I have read and agreed to the <a
-							href="<?php echo $this->getUrl('tearms') ?>" style="color: red">Terms &amp; Conditions.</a> </label>
-					</div>
-				</li>
-			</ul>
-
-
-			<script type="text/javascript">
-//<![CDATA[
-    function toggleRememberMepopup(event){
-        if($('remember-me-popup')){
-            var viewportHeight = document.viewport.getHeight(),
-                docHeight      = $$('body')[0].getHeight(),
-                height         = docHeight > viewportHeight ? docHeight : viewportHeight;
-            $('remember-me-popup').toggle();
-            $('window-overlay').setStyle({ height: height + 'px' }).toggle();
-        }
-        Event.stop(event);
-    }
-
-    document.observe("dom:loaded", function() {
-        new Insertion.Bottom($$('body')[0], $('window-overlay'));
-        new Insertion.Bottom($$('body')[0], $('remember-me-popup'));
-
-        $$('.remember-me-popup-close').each(function(element){
-            Event.observe(element, 'click', toggleRememberMepopup);
-        })
-        $$('#remember-me-box a').each(function(element) {
-            Event.observe(element, 'click', toggleRememberMepopup);
-        });
-    });
-//]]>
-</script>
-		</div>
+        <div class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Legal terms and policy') ?></h2>
+            <ul class="form-list">
+                <li class="fields">
+                    <div class="field" style="width: 100%">
+                        <input type="checkbox" class="required-entry terms-check" name="terms-check" id="terms" style="" />
+                        <label for="terms" class="required"><?php echo $this->__('I have read and agree to the ') ?><a href="<?php echo $this->getUrl('terms') ?>" style="color: red;"> <?php echo $this->__('Terms & Conditions.')?></a></label>
+                    </div>
+                </li>
+                <?php echo $this->getChildHtml('form.additional.info'); ?>
+                <?php echo $this->getChildHtml('persistent.remember.me'); ?>
+            </ul>
+            <?php echo $this->getChildHtml('persistent.remember.me.tooltip'); ?>
+        </div>
 		<!--  Accept Information -->
 		<div class="buttons-set">
 			<p class="required">
