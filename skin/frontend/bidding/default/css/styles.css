@@ -267,7 +267,7 @@ p.control input.radio { margin-right:6px; }
 .buttons-set-order {}
 
 .fieldset { border:1px solid #ddd; background:#231f20; padding:22px 25px 12px 33px; margin:28px 0; color: #fff}
- .legend { float:left; font-weight:bold;  background: #d1d3d4; color: #231f20; margin: -43px 0 0 0px; padding:0 8px; position:relative; clear: both; font-size: 1.3em; font-weight: 600;}
+ .legend { float:left; font-weight:bold;  background: #d1d3d4; color: #231f20; padding:0 8px; position:relative; clear: both; font-size: 1.3em; font-weight: 600;}
 .legend+*{
     clear: both;
 }
