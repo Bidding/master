@@ -42,6 +42,17 @@
 			</checkout_onepage_controller_success_action>
 	</events>
 	</frontend>
+	<admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<bidding_points before="Mage_Adminhtml">Bidding_Points_Adminhtml</bidding_points>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
 	<global>
 		<blocks>
 			<points>
@@ -97,5 +108,5 @@
 				<class>Bidding_Points_Helper</class>
 			</points>
 		</helpers>
-		</global>
+	</global>
 </config>

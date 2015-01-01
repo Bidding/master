@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<customer>
+			<children>
+				<points translate="title" module="points">
+					<title>Points Managment</title>
+					<store_order>10</store_order>
+					<action>adminhtml/points</action>
+				</points>
+			</children>
+		</customer>
+	</menu>
+</config>

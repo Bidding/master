@@ -1,0 +1,59 @@
+<?php
+$customer_id = $this->getRequest()->getParam('id');
+$points_model = Mage::getModel('points/points')->load($customer_id,'customer_id');
+$customer_model = Mage::getModel('customer/customer')->load($customer_id);
+?>
+
+<form
+	action="<?php echo Mage::helper("adminhtml")->getUrl('/points/setPoints/') ?>"
+	method="post">
+	<input name="form_key" type="hidden"
+		value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+	<input type="hidden" name="id"
+		value="<?php echo $this->getRequest()->getParam('id') ?>" />
+	<div class="entry-edit" id="address_form_container">
+		<div id="form_address_item_12">
+			<div class="entry-edit-head">
+				<h4 class="icon-head head-edit-form fieldset-legend">Customer Points
+					Managment</h4>
+				<div class="form-buttons"></div>
+			</div>
+			<div class="fieldset " id="_item12address_fieldset">
+				<div class="hor-scroll">
+					<table cellspacing="0" class="form-list">
+						<tbody>
+							<tr>
+								<td class="label"><label for="_item12prefix">Customer Email</label>
+								</td>
+								<td><h3>
+								<?php echo $customer_model->getEmail() ?>
+									</h3></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td class="label"><label for="_item12prefix">Current Balance</label>
+								</td>
+								<td><h3>
+								<?php echo ($points_model->getBalance() ? $points_model->getBalance() : 0) ?>
+									</h3></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td class="label"><label for="_item12prefix">Balance</label></td>
+								<td class="value"><input type="text"
+									class=" input-text required-entry validate-number"
+									name="balance" value="" />
+								</td>
+								<td class="value"><input type="submit" class="form-button" value="submit" />
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<input type="hidden" name="address[13][_deleted]"
+				id="deleted_address_item_13">
+		</div>
+	</div>
+</form>
