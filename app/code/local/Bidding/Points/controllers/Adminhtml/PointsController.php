@@ -29,6 +29,9 @@ class Bidding_Points_Adminhtml_PointsController extends Mage_Adminhtml_Controlle
 	public function setPointsAction() {
 		$data = $this->getRequest()->getParams();
 		$points_model = Mage::getModel('points/points')->load($data['id'], 'customer_id');
+		if (!$points_model->getId()) {
+			$points_model->setCustomerId($data['id']);
+		}
 		$balance = $points_model->getBalance() + (int)$data['balance'];
 		$points_model->setBalance($balance);
 		$points_model->save();
